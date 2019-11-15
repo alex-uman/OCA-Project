@@ -125,5 +125,52 @@ class BrickHalf extends Moveable {
 	public String getTyp() {
 		return "Brick";
 	}
+}
 
+class Bullet extends Moveable {
+
+	private boolean left = false;
+	private boolean right = true;
+	private boolean up = true;
+	private boolean down = false;
+
+	Bullet(int posX, int posY) {
+		super(posX, posY, Constants.BULLET_WIDTH, Constants.BULLET_HEIGTH);
+	}
+
+	public void setLeft(boolean val) {
+		this.left = val;
+	}
+
+	public void setRight(boolean val) {
+		this.right = val;
+	}
+
+	public void setUp(boolean val) {
+		this.up = val;
+	}
+
+	public void setDown(boolean val) {
+		this.down = val;
+	}
+
+	public boolean getLeft() {
+		return this.left;
+	}
+
+	public boolean getRight() {
+		return this.right;
+	}
+
+	public boolean getUp() {
+		return this.up;
+	}
+
+	public boolean getDown() {
+		return this.down;
+	}
+
+	public String getTyp() {
+		return "Bullet";
+	}
 }
