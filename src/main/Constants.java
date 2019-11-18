@@ -4,6 +4,8 @@ public class Constants {
 	static final int DIM_X = 524;
 	static final int DIM_Y = 729;
 	
+	static final int MOVE_DISTANCE = 20;
+	
 	static final int BORDER_THICK=4;
 	
 	static final int BRICK_WIDTH=50;

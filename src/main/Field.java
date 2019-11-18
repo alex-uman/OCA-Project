@@ -204,89 +204,89 @@ public class Field {
 		return 1;
 	}
 
-	public byte checkLEFT(Item item) {
-
-		if (item == null)
-			return -2;
-
-		int x = item.getX() - 1;
-		int y = item.getY();
-		int size = y + item.getHeigth();
-		byte check;
-
-		for (int i = y; i < size; i++) {
-
-			check = checkPixel(x, i);
-
-			if (check != 1)
-				return check;
-		}
-
-		return 1;
-	}
-
-	public byte checkRIGHT(Item item) {
-
-		if (item == null)
-			return -2;
-
-		int x = item.getX() + item.getWidth() + 1;
-		int y = item.getY();
-		int size = y + item.getHeigth();
-		byte check;
-
-		for (int i = y; i < size; i++) {
-
-			check = checkPixel(x, i);
-
-			if (check != 1)
-				return check;
-		}
-
-		return 1;
-	}
-
-	public byte checkUP(Item item) {
-
-		if (item == null)
-			return -2;
-
-		int x = item.getX();
-		int y = item.getY() - 1;
-		int size = x + item.getWidth();
-		byte check;
-
-		for (int i = x; i < size; i++) {
-
-			check = checkPixel(i, y);
-
-			if (check != 1)
-				return check;
-		}
-
-		return 1;
-	}
-
-	public byte checkDOWN(Item item) {
-
-		if (item == null)
-			return -2;
-
-		int x = item.getX();
-		int y = item.getY() + item.getHeigth() + 1;
-		int size = x + item.getWidth();
-		byte check;
-
-		for (int i = x; i < size; i++) {
-
-			check = checkPixel(i, y);
-
-			if (check != 1)
-				return check;
-		}
-
-		return 1;
-	}
+//	public byte checkLEFT(Item item) {
+//
+//		if (item == null)
+//			return -2;
+//
+//		int x = item.getX() - 1;
+//		int y = item.getY();
+//		int size = y + item.getHeigth();
+//		byte check;
+//
+//		for (int i = y; i < size; i++) {
+//
+//			check = checkPixel(x, i);
+//
+//			if (check != 1)
+//				return check;
+//		}
+//
+//		return 1;
+//	}
+//
+//	public byte checkRIGHT(Item item) {
+//
+//		if (item == null)
+//			return -2;
+//
+//		int x = item.getX() + item.getWidth() + 1;
+//		int y = item.getY();
+//		int size = y + item.getHeigth();
+//		byte check;
+//
+//		for (int i = y; i < size; i++) {
+//
+//			check = checkPixel(x, i);
+//
+//			if (check != 1)
+//				return check;
+//		}
+//
+//		return 1;
+//	}
+//
+//	public byte checkUP(Item item) {
+//
+//		if (item == null)
+//			return -2;
+//
+//		int x = item.getX();
+//		int y = item.getY() - 1;
+//		int size = x + item.getWidth();
+//		byte check;
+//
+//		for (int i = x; i < size; i++) {
+//
+//			check = checkPixel(i, y);
+//
+//			if (check != 1)
+//				return check;
+//		}
+//
+//		return 1;
+//	}
+//
+//	public byte checkDOWN(Item item) {
+//
+//		if (item == null)
+//			return -2;
+//
+//		int x = item.getX();
+//		int y = item.getY() + item.getHeigth() + 1;
+//		int size = x + item.getWidth();
+//		byte check;
+//
+//		for (int i = x; i < size; i++) {
+//
+//			check = checkPixel(i, y);
+//
+//			if (check != 1)
+//				return check;
+//		}
+//
+//		return 1;
+//	}
 
 	public byte hitLEFT(Item item) {
 
@@ -296,7 +296,7 @@ public class Field {
 		Item nextItem = getPixel(item.getX() - 1, item.getY() + (item.getHeigth() / 2));
 
 		if (nextItem != null) {
-			if (moveLEFT(10, nextItem) != 1)
+			if (moveLEFT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
 		}
@@ -313,7 +313,7 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + item.getWidth() + 1, item.getY() + (item.getHeigth() / 2));
 
 		if (nextItem != null) {
-			if (moveRIGHT(10, nextItem) != 1)
+			if (moveRIGHT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
 		}
@@ -329,7 +329,7 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + (item.getWidth() / 2), item.getY() - 1);
 
 		if (nextItem != null) {
-			if (moveUP(10, nextItem) != 1)
+			if (moveUP(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
 		}
@@ -345,7 +345,7 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + (item.getWidth() / 2), item.getY() + item.getHeigth() + 1);
 
 		if (nextItem != null) {
-			if (moveDOWN(10, nextItem) != 1)
+			if (moveDOWN(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
 		}
