@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Field {
 
 	private Item[][] pixel;
-
 	private ArrayList<Item> itemList = new ArrayList<>();
+	private int brickCount = 0;
 
 	Field(int dimX, int dimY) {
 
@@ -20,6 +20,23 @@ public class Field {
 
 	public void clearField() {
 		this.fillNull(0, 0, this.getDimX(), this.getDimY());
+	}
+
+	public void brickCountUp() {
+		this.brickCount++;
+	}
+
+	public void brickCountDown() {
+
+//		if (brickCount == 0)
+//			return false;
+
+		this.brickCount--;
+//		return true;
+	}
+
+	public int getBrickCount() {
+		return this.brickCount;
 	}
 
 	public int getDimX() {
@@ -55,11 +72,12 @@ public class Field {
 		if (item == null)
 			return false;
 
-//		System.out.println(item);
-//		System.out.println(check);
-
 		if (this.putItem(item.getX(), item.getY(), item) == 1) {
 			this.itemList.add(item);
+
+			if (item.getTyp() == "Brick")
+				this.brickCountUp();
+
 			return true;
 		}
 
@@ -296,6 +314,8 @@ public class Field {
 		Item nextItem = getPixel(item.getX() - 1, item.getY() + (item.getHeigth() / 2));
 
 		if (nextItem != null) {
+			if (nextItem.getTyp() != "Brick")
+				return 0;
 			if (moveLEFT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
@@ -313,6 +333,8 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + item.getWidth() + 1, item.getY() + (item.getHeigth() / 2));
 
 		if (nextItem != null) {
+			if (nextItem.getTyp() != "Brick")
+				return 0;
 			if (moveRIGHT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
@@ -329,6 +351,8 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + (item.getWidth() / 2), item.getY() - 1);
 
 		if (nextItem != null) {
+			if (nextItem.getTyp() != "Brick")
+				return 0;
 			if (moveUP(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
@@ -345,6 +369,8 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + (item.getWidth() / 2), item.getY() + item.getHeigth() + 1);
 
 		if (nextItem != null) {
+			if (nextItem.getTyp() != "Brick")
+				return 0;
 			if (moveDOWN(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
@@ -361,11 +387,6 @@ public class Field {
 		if (!item.Moveable())
 			return -3;
 
-//		int x = item.getX();
-//		int y = item.getY();
-//
-//		System.out.println(x + " " + y + " " + (item.getWidth() + x) + " " + (item.getHeigth() + y));
-
 		removeItem(item);
 
 		return 1;
@@ -378,6 +399,17 @@ public class Field {
 //		System.out.println(getItemList().size());
 
 		eraseItem(item);
+
+		if (item.getTyp() == "Brick") {
+			this.brickCountDown();
+//			System.out.println(this.getBrickCount());
+		}
+
+		try {
+			Thread.sleep(1);
+		} catch (Exception e) {
+//			e.printStackTrace();
+		}
 
 		list.remove(item);
 

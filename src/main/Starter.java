@@ -2,6 +2,8 @@ package main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 //import java.awt.image.BufferedImage;
 //import java.io.File;
@@ -31,8 +33,6 @@ public class Starter {
 
 			Item item;
 
-//			System.out.println("\nsize: " + size);
-
 			for (int i = 0; i < size; i++) {
 
 				item = this.field.getItemList(i);
@@ -42,23 +42,29 @@ public class Starter {
 				case "Border":
 					g.setColor(Color.WHITE);
 					g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
-//					System.out.println(item);
 					break;
 
 				case "Brick":
+
+					Brick brick = (Brick) item;
 					g.setColor(Color.BLACK);
 					g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
 					g.setColor(Color.WHITE);
 					g.fillRect(item.getX() + 1, item.getY() + 1, item.getWidth() - 2, item.getHeigth() - 2);
-					g.setColor(Color.RED);
+					g.setColor(brick.getColor());
 					g.fillRect(item.getX() + 3, item.getY() + 3, item.getWidth() - 6, item.getHeigth() - 6);
-//					System.out.println(item);
 					break;
 
 				case "Bullet":
 					g.setColor(Color.YELLOW);
 					g.fillOval(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
-//					System.out.println(item);
+					break;
+
+				case "Pitcher":
+					g.setColor(Color.WHITE);
+					g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
+					g.setColor(Color.BLACK);
+					g.fillRect(item.getX() + 2, item.getY() + 2, item.getWidth() - 5, item.getHeigth() - 5);
 					break;
 
 				}
@@ -66,20 +72,72 @@ public class Starter {
 		}
 	}
 
+	static class KeyCatcher implements KeyListener {
+		private Field field;
+		private Item item;
+
+		KeyCatcher(Field field, Item item) {
+			this.field = field;
+			this.item = item;
+		}
+
+		public void keyPressed(KeyEvent key) {
+			switch (key.getKeyCode()) {
+			case 37:
+				moveCatcherLeft(field, item);
+				break;
+			case 39:
+				moveCatcherRight(field, item);
+				break;
+			}
+
+		}
+
+		public void keyReleased(KeyEvent key) {
+		}
+
+		public void keyTyped(KeyEvent key) {
+		}
+	}
+
 	public static void main(String[] args) {
 
 		Field aField = new Field(Constants.DIM_X, Constants.DIM_Y);
 
+		PitcherDown pitcherDown = setPitcherDown(aField);
+		PitcherUp pitcherUp = setPitcherUp(aField);
+
 		fillField(aField);
 
-		Bullet bulletOne = new Bullet(300, 650);
+		setField(aField, pitcherDown);
 
-		setBullet(bulletOne, aField);
+		BulletDown bulletDown = new BulletDown();
+		BulletThread bulletDownThread = new BulletThread(bulletDown, aField);
+		bulletDownThread.start();
 
-		setField(aField);
+		BulletUp bulletUp = new BulletUp();
+		BulletThread bulletUpThread = new BulletThread(bulletUp, aField);
+		bulletUpThread.start();
 
-		move(bulletOne, aField);
+		PitcherThread pitcherAI = new PitcherThread(bulletUp, bulletDown, pitcherUp, aField);
+		pitcherAI.start();
 
+		for (;;) {
+//			try {
+//				Thread.sleep(100);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+
+			if (aField.getBrickCount() < 1) {
+
+				bulletUpThread.stop();
+				bulletDownThread.stop();
+				pitcherAI.stop();
+
+				System.exit(0);
+			}
+		}
 	}
 
 	static void fillField(Field aField) {
@@ -104,7 +162,7 @@ public class Starter {
 		aField.setItemList(new Brick(404, 300));
 		aField.setItemList(new Brick(454, 300));
 
-		aField.setItemList(new BrickHalf(4, 330));
+//		aField.setItemList(new BrickHalf(4, 330));
 
 		aField.setItemList(new Brick(29, 330));
 		aField.setItemList(new Brick(79, 330));
@@ -116,7 +174,7 @@ public class Starter {
 		aField.setItemList(new Brick(379, 330));
 		aField.setItemList(new Brick(429, 330));
 
-		aField.setItemList(new BrickHalf(479, 330));
+//		aField.setItemList(new BrickHalf(479, 330));
 
 		aField.setItemList(new Brick(4, 360));
 		aField.setItemList(new Brick(54, 360));
@@ -128,21 +186,21 @@ public class Starter {
 		aField.setItemList(new Brick(354, 360));
 		aField.setItemList(new Brick(404, 360));
 		aField.setItemList(new Brick(454, 360));
-
-//		System.out.println(aField.getItemList().size());
-
-// 		for (int i = 0; i < myField.getDimX(); i++)
-//		for (int j = 0; j < myField.getDimY(); j++)
-//			if (myField.getPixel(i, j) != null)
-//				System.out.println(i + " " + j + " " + myField.getPixel(i, j));
-
 	}
 
-	static void setBullet(Bullet aBullet, Field aField) {
-		aField.setItemList(aBullet);
+	static PitcherUp setPitcherUp(Field field) {
+		PitcherUp pitcherUp = new PitcherUp();
+		field.setItemList(pitcherUp);
+		return pitcherUp;
 	}
 
-	static void setField(Field aField) {
+	static PitcherDown setPitcherDown(Field field) {
+		PitcherDown pitcherDown = new PitcherDown();
+		field.setItemList(pitcherDown);
+		return pitcherDown;
+	}
+
+	static void setField(Field aField, Item pitcherDown) {
 		frame = new JFrame("Suppressor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -155,52 +213,18 @@ public class Starter {
 		frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - aField.getDimX()) / 2,
 				(Toolkit.getDefaultToolkit().getScreenSize().height - aField.getDimY()) / 2 - 20);
 
+		JButton button = new JButton();
+
+		button.addKeyListener(new KeyCatcher(aField, pitcherDown));
+		frame.add(button);
 	}
 
-	static void move(Bullet aBullet, Field aField) {
-		for (;;) {
-			if (aField.hitRIGHT(aBullet) != 1) {
-				aBullet.setRight(false);
-				aBullet.setLeft(true);
-			}
-			if (aField.hitLEFT(aBullet) != 1) {
-				aBullet.setRight(true);
-				aBullet.setLeft(false);
-			}
-			if (aField.hitUP(aBullet) != 1) {
-				aBullet.setUp(false);
-				aBullet.setDown(true);
-			}
-			if (aField.hitDOWN(aBullet) != 1) {
-				aBullet.setUp(true);
-				aBullet.setDown(false);
-			}
-
-//			System.out.println("Left:  " + aBullet.getLeft());
-//			System.out.println("Right: " + aBullet.getRight());
-//			System.out.println("Up:    " + aBullet.getUp());
-//			System.out.println("Down:  " + aBullet.getDown());
-//			System.out.println();
-
-			if (aBullet.getLeft())
-				aField.moveLEFT(aBullet);
-
-			if (aBullet.getRight())
-				aField.moveRIGHT(aBullet);
-
-			if (aBullet.getUp())
-				aField.moveUP(aBullet);
-
-			if (aBullet.getDown() == true)
-				aField.moveDOWN(aBullet);
-
-			try {
-				Thread.sleep(1);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			frame.repaint();
-		}
+	static void moveCatcherRight(Field field, Item item) {
+		field.moveRIGHT(Constants.MOVE_DISTANCE, item);
 	}
+
+	static void moveCatcherLeft(Field field, Item item) {
+		field.moveLEFT(Constants.MOVE_DISTANCE, item);
+	}
+
 }

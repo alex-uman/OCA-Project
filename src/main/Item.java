@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.Color;
+
 public class Item {
 
 	private int posX, posY, width, heigth;
@@ -107,6 +109,8 @@ class Border extends Immobile {
 
 class Brick extends Moveable {
 
+	private Color color = RandomColor();
+
 	Brick(int posX, int posY) {
 		super(posX, posY, Constants.BRICK_WIDTH, Constants.BRICK_HEIGTH);
 	}
@@ -114,16 +118,37 @@ class Brick extends Moveable {
 	public String getTyp() {
 		return "Brick";
 	}
-}
 
-class BrickHalf extends Moveable {
-
-	BrickHalf(int posX, int posY) {
-		super(posX, posY, Constants.BRICK_WIDTH / 2, Constants.BRICK_HEIGTH);
+	public Color getColor() {
+		return this.color;
 	}
 
-	public String getTyp() {
-		return "Brick";
+	private Color RandomColor() {
+
+		int random = (int) (Math.random() * 7);
+
+		switch (random) {
+		case 0:
+			return Color.RED;
+		case 1:
+			return Color.GREEN;
+		case 2:
+			return Color.BLUE;
+		case 3:
+			return Color.MAGENTA;
+		case 4:
+			return Color.CYAN;
+		default:
+			return Color.ORANGE;
+		}
+	}
+}
+
+class BrickHalf extends Brick {
+
+	BrickHalf(int posX, int posY) {
+		super(posX, posY);
+		this.setWidth(this.getWidth() / 2);
 	}
 }
 
@@ -172,5 +197,46 @@ class Bullet extends Moveable {
 
 	public String getTyp() {
 		return "Bullet";
+	}
+}
+
+class BulletUp extends Bullet {
+
+	BulletUp() {
+		super((Constants.DIM_X - Constants.BULLET_WIDTH) / 2, Constants.BORDER_THICK + Constants.BULLET_HEIGTH + 2);
+	}
+}
+
+class BulletDown extends Bullet {
+
+	BulletDown() {
+		super((Constants.DIM_X - Constants.BULLET_WIDTH) / 2,
+				Constants.DIM_Y - 39 - Constants.BORDER_THICK - Constants.PITCHER_HEIGTH - Constants.BULLET_HEIGTH - 2);
+	}
+}
+
+class Pitcher extends Moveable {
+
+	Pitcher(int posX, int posY) {
+		super(posX, posY, Constants.PITCHER_WIDTH, Constants.PITCHER_HEIGTH);
+	}
+
+	public String getTyp() {
+		return "Pitcher";
+	}
+}
+
+class PitcherUp extends Pitcher {
+
+	PitcherUp() {
+		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2, Constants.BORDER_THICK + 2);
+	}
+}
+
+class PitcherDown extends Pitcher {
+
+	PitcherDown() {
+		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2,
+				Constants.DIM_Y - 39 - Constants.BORDER_THICK - Constants.PITCHER_HEIGTH - 2);
 	}
 }
