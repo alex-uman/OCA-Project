@@ -1,6 +1,6 @@
 package main;
 
-public class PitcherThread implements Runnable {
+public class PitcherAIThread implements Runnable {
 
 	private Thread newThread;
 
@@ -8,7 +8,7 @@ public class PitcherThread implements Runnable {
 	private Bullet bulletUp, bulletDown;
 	private Pitcher pitcherUp;
 
-	PitcherThread(Bullet bulletUp, Bullet bulletDown, Pitcher pitcherUp, Field field) {
+	PitcherAIThread(Bullet bulletUp, Bullet bulletDown, Pitcher pitcherUp, Field field) {
 		super();
 		this.field = field;
 		this.bulletUp = bulletUp;
@@ -39,12 +39,12 @@ public class PitcherThread implements Runnable {
 		int x = bulletUp.getY() < bulletDown.getY() ? bulletUp.getX() : bulletDown.getX();
 
 		if (pitcherUp.getX() < x)
-			field.moveRIGHT(Constants.MOVE_DISTANCE, pitcherUp);
+			field.moveRIGHT(pitcherUp);
 		else if (pitcherUp.getX() > x)
-			field.moveLEFT(Constants.MOVE_DISTANCE, pitcherUp);
+			field.moveLEFT(pitcherUp);
 
 		try {
-			Thread.sleep(Constants.BULLET_DELAY);
+			Thread.sleep(1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -110,6 +110,7 @@ class Border extends Immobile {
 class Brick extends Moveable {
 
 	private Color color = RandomColor();
+	private byte thickness = 1;
 
 	Brick(int posX, int posY) {
 		super(posX, posY, Constants.BRICK_WIDTH, Constants.BRICK_HEIGTH);
@@ -121,6 +122,14 @@ class Brick extends Moveable {
 
 	public Color getColor() {
 		return this.color;
+	}
+
+	public byte getThickness() {
+		return this.thickness;
+	}
+
+	public void setThickness(byte thickness) {
+		this.thickness = thickness;
 	}
 
 	private Color RandomColor() {
@@ -144,13 +153,21 @@ class Brick extends Moveable {
 	}
 }
 
-class BrickHalf extends Brick {
+//class ThickBrick extends Brick {
+//
+//	ThickBrick(int posX, int posY) {
+//		super(posX, posY);
+//		this.setThickness((byte) 2);
+//	}
+//}
 
-	BrickHalf(int posX, int posY) {
-		super(posX, posY);
-		this.setWidth(this.getWidth() / 2);
-	}
-}
+//class BrickHalf extends Brick {
+//
+//	BrickHalf(int posX, int posY) {
+//		super(posX, posY);
+//		this.setWidth(this.getWidth() / 2);
+//	}
+//}
 
 class Bullet extends Moveable {
 
@@ -158,6 +175,8 @@ class Bullet extends Moveable {
 	private boolean right = true;
 	private boolean up = true;
 	private boolean down = false;
+	private byte rateX = 0;
+	private byte rateY = 0;
 
 	Bullet(int posX, int posY) {
 		super(posX, posY, Constants.BULLET_WIDTH, Constants.BULLET_HEIGTH);
@@ -195,6 +214,40 @@ class Bullet extends Moveable {
 		return this.down;
 	}
 
+	public byte getRateX() {
+		return this.rateX;
+	}
+
+	public byte getRateY() {
+		return this.rateY;
+	}
+
+	public void halfRateX() {
+		this.rateX = 2;
+	}
+
+	public void normalRateX() {
+		this.rateX = 0;
+	}
+
+	public void halfRateY() {
+		this.rateY = 2;
+	}
+
+	public void normalRateY() {
+		this.rateY = 0;
+	}
+
+	public void switchRateX() {
+		if (this.rateX > 0)
+			this.rateX = this.rateX == 2 ? (byte) 1 : (byte) 2;
+	}
+
+	public void switchRateY() {
+		if (this.rateY > 0)
+			this.rateY = this.rateY == 2 ? (byte) 1 : (byte) 2;
+	}
+
 	public String getTyp() {
 		return "Bullet";
 	}
@@ -229,7 +282,7 @@ class Pitcher extends Moveable {
 class PitcherUp extends Pitcher {
 
 	PitcherUp() {
-		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2, Constants.BORDER_THICK + 2);
+		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2, 2);// Constants.BORDER_THICK );
 	}
 }
 
@@ -237,6 +290,7 @@ class PitcherDown extends Pitcher {
 
 	PitcherDown() {
 		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2,
-				Constants.DIM_Y - 39 - Constants.BORDER_THICK - Constants.PITCHER_HEIGTH - 2);
+				Constants.DIM_Y - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2);// -
+		// Constants.BORDER_THICK);
 	}
 }

@@ -31,43 +31,53 @@ public class Starter {
 
 			int size = this.field.getItemList().size();
 
-			Item item;
+//			Item item;
 
-			for (int i = 0; i < size; i++) {
+			try {
 
-				item = this.field.getItemList(i);
+				for (int i = 0; i < size; i++) {
 
-				switch (item.getTyp()) {
+					Item item = this.field.getItemList(i);
 
-				case "Border":
-					g.setColor(Color.WHITE);
-					g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
-					break;
+					switch (item.getTyp()) {
 
-				case "Brick":
+					case "Border":
+						g.setColor(Color.WHITE);
+						g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
+						break;
 
-					Brick brick = (Brick) item;
-					g.setColor(Color.BLACK);
-					g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
-					g.setColor(Color.WHITE);
-					g.fillRect(item.getX() + 1, item.getY() + 1, item.getWidth() - 2, item.getHeigth() - 2);
-					g.setColor(brick.getColor());
-					g.fillRect(item.getX() + 3, item.getY() + 3, item.getWidth() - 6, item.getHeigth() - 6);
-					break;
+					case "Brick":
 
-				case "Bullet":
-					g.setColor(Color.YELLOW);
-					g.fillOval(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
-					break;
+						Brick brick = (Brick) item;
+						g.setColor(Color.BLACK);
+						g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
+						g.setColor(Color.WHITE);
+						g.fillRect(item.getX() + 1, item.getY() + 1, item.getWidth() - 2, item.getHeigth() - 2);
+						g.setColor(brick.getColor());
+						g.fillRect(item.getX() + 3, item.getY() + 3, item.getWidth() - 6, item.getHeigth() - 6);
 
-				case "Pitcher":
-					g.setColor(Color.WHITE);
-					g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
-					g.setColor(Color.BLACK);
-					g.fillRect(item.getX() + 2, item.getY() + 2, item.getWidth() - 5, item.getHeigth() - 5);
-					break;
+						if (brick.getThickness() == 2) {
+							g.setColor(new Color(255, 255, 255, 200));
+							g.fillRect(item.getX() + 3, item.getY() + 3, item.getWidth() - 6, item.getHeigth() - 6);
+						}
+						break;
 
+					case "Bullet":
+						g.setColor(Color.YELLOW);
+						g.fillOval(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
+						break;
+
+					case "Pitcher":
+						g.setColor(Color.WHITE);
+						g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
+						g.setColor(Color.BLACK);
+						g.fillRect(item.getX() + 2, item.getY() + 2, item.getWidth() - 5, item.getHeigth() - 5);
+						break;
+
+					}
 				}
+			} catch (NullPointerException e) {
+				System.out.println("!!!");
 			}
 		}
 	}
@@ -97,29 +107,35 @@ public class Starter {
 		}
 
 		public void keyTyped(KeyEvent key) {
+			switch (key.getKeyCode()) {
+			case 37:
+				moveCatcherLeft(field, item);
+				break;
+			case 39:
+				moveCatcherRight(field, item);
+				break;
+			}
 		}
 	}
 
 	public static void main(String[] args) {
 
-		Field aField = new Field(Constants.DIM_X, Constants.DIM_Y);
-
-		PitcherDown pitcherDown = setPitcherDown(aField);
-		PitcherUp pitcherUp = setPitcherUp(aField);
-
-		fillField(aField);
-
-		setField(aField, pitcherDown);
+		Field field = new Field(Constants.DIM_X, Constants.DIM_Y);
 
 		BulletDown bulletDown = new BulletDown();
-		BulletThread bulletDownThread = new BulletThread(bulletDown, aField);
-		bulletDownThread.start();
-
+		BulletThread bulletDownThread = new BulletThread(bulletDown, field);
 		BulletUp bulletUp = new BulletUp();
-		BulletThread bulletUpThread = new BulletThread(bulletUp, aField);
-		bulletUpThread.start();
+		BulletThread bulletUpThread = new BulletThread(bulletUp, field);
 
-		PitcherThread pitcherAI = new PitcherThread(bulletUp, bulletDown, pitcherUp, aField);
+		PitcherDown pitcherDown = setPitcherDown(field);
+		PitcherUp pitcherUp = setPitcherUp(field);
+		PitcherAIThread pitcherAI = new PitcherAIThread(bulletUp, bulletDown, pitcherUp, field);
+
+		fillField(field);
+		setField(field, pitcherDown);
+
+		bulletDownThread.start();
+		bulletUpThread.start();
 		pitcherAI.start();
 
 		for (;;) {
@@ -129,63 +145,66 @@ public class Starter {
 //				e.printStackTrace();
 //			}
 
-			if (aField.getBrickCount() < 1) {
-
-				bulletUpThread.stop();
-				bulletDownThread.stop();
-				pitcherAI.stop();
-
-				System.exit(0);
-			}
+//			if (field.getBrickCount() < 1) {
+//
+//				bulletUpThread.stop();
+//				bulletDownThread.stop();
+//				pitcherAI.stop();
+//
+//				closing();
+//			}
 		}
 	}
 
-	static void fillField(Field aField) {
+	static void fillField(Field field) {
 
-		aField.setItemList(new Border(0, 0, Constants.BORDER_THICK, aField.getDimY() - 39));
-		aField.setItemList(new Border(aField.getDimX() - Constants.BORDER_THICK - 16, 0, Constants.BORDER_THICK,
-				aField.getDimY() - 39));
-		aField.setItemList(new Border(Constants.BORDER_THICK, 0, aField.getDimX() - (Constants.BORDER_THICK * 2) - 16,
-				Constants.BORDER_THICK));
+		standardBorder(field);
 
-		aField.setItemList(new Border(Constants.BORDER_THICK, aField.getDimY() - 43,
-				aField.getDimX() - (Constants.BORDER_THICK * 2) - 16, Constants.BORDER_THICK));
+		brickRow(Constants.BORDER_THICK, 300, field);
 
-		aField.setItemList(new Brick(4, 300));
-		aField.setItemList(new Brick(54, 300));
-		aField.setItemList(new Brick(104, 300));
-		aField.setItemList(new Brick(154, 300));
-		aField.setItemList(new Brick(204, 300));
-		aField.setItemList(new Brick(254, 300));
-		aField.setItemList(new Brick(304, 300));
-		aField.setItemList(new Brick(354, 300));
-		aField.setItemList(new Brick(404, 300));
-		aField.setItemList(new Brick(454, 300));
+//		field.setItemList(new BrickHalf(4, 330));
 
-//		aField.setItemList(new BrickHalf(4, 330));
+		brickRow(Constants.BORDER_THICK + Constants.BRICK_WIDTH / 2, 330, field, true);
 
-		aField.setItemList(new Brick(29, 330));
-		aField.setItemList(new Brick(79, 330));
-		aField.setItemList(new Brick(129, 330));
-		aField.setItemList(new Brick(179, 330));
-		aField.setItemList(new Brick(229, 330));
-		aField.setItemList(new Brick(279, 330));
-		aField.setItemList(new Brick(329, 330));
-		aField.setItemList(new Brick(379, 330));
-		aField.setItemList(new Brick(429, 330));
+//		field.setItemList(new BrickHalf(479, 330));
 
-//		aField.setItemList(new BrickHalf(479, 330));
+		brickRow(Constants.BORDER_THICK, 360, field);
 
-		aField.setItemList(new Brick(4, 360));
-		aField.setItemList(new Brick(54, 360));
-		aField.setItemList(new Brick(104, 360));
-		aField.setItemList(new Brick(154, 360));
-		aField.setItemList(new Brick(204, 360));
-		aField.setItemList(new Brick(254, 360));
-		aField.setItemList(new Brick(304, 360));
-		aField.setItemList(new Brick(354, 360));
-		aField.setItemList(new Brick(404, 360));
-		aField.setItemList(new Brick(454, 360));
+	}
+
+	static boolean brickRow(int x, int y, Field field, boolean isThick) {
+
+		if (field == null)
+			return false;
+
+		int width = field.getDimX();
+
+		for (;;) {
+			Brick brick = new Brick(x, y);
+			if (isThick)
+				brick.setThickness((byte) 2);
+			field.setItemList(brick);
+			if (x > width)
+				return true;
+			x += brick.getWidth();
+
+		}
+	}
+
+	static boolean brickRow(int x, int y, Field field) {
+		return brickRow(x, y, field, false);
+	}
+
+	static void standardBorder(Field field) {
+		field.setItemList(new Border(0, 0, Constants.BORDER_THICK, field.getDimY() - Constants.MARGIN_Y));
+		field.setItemList(new Border(field.getDimX() - Constants.BORDER_THICK - 16, 0, Constants.BORDER_THICK,
+				field.getDimY() - Constants.MARGIN_Y));
+
+		// field.setItemList(new Border(Constants.BORDER_THICK, 0, field.getDimX() -
+		// (Constants.BORDER_THICK * 2) - 16,
+//				Constants.BORDER_THICK));
+//		field.setItemList(new Border(Constants.BORDER_THICK, field.getDimY() - 43,
+//				field.getDimX() - (Constants.BORDER_THICK * 2) - 16, Constants.BORDER_THICK));
 	}
 
 	static PitcherUp setPitcherUp(Field field) {
@@ -200,31 +219,65 @@ public class Starter {
 		return pitcherDown;
 	}
 
-	static void setField(Field aField, Item pitcherDown) {
+	static void setField(Field field, Item pitcherDown) {
 		frame = new JFrame("Suppressor");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		drawPanel = new DrawPanel(aField);
+		drawPanel = new DrawPanel(field);
 		frame.getContentPane().add(BorderLayout.CENTER, drawPanel);
 
 		frame.setVisible(true);
 		frame.setResizable(false);
-		frame.setSize(aField.getDimX(), aField.getDimY());
-		frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - aField.getDimX()) / 2,
-				(Toolkit.getDefaultToolkit().getScreenSize().height - aField.getDimY()) / 2 - 20);
+		frame.setSize(field.getDimX(), field.getDimY());
+		frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - field.getDimX()) / 2,
+				(Toolkit.getDefaultToolkit().getScreenSize().height - field.getDimY()) / 2 - Constants.MARGIN_Y / 2);
 
 		JButton button = new JButton();
 
-		button.addKeyListener(new KeyCatcher(aField, pitcherDown));
+		button.addKeyListener(new KeyCatcher(field, pitcherDown));
 		frame.add(button);
+
+//		frame.setExtendedState(JFrame.ICONIFIED);
+//		frame.setExtendedState(JFrame.NORMAL);
+//		frame.toFront();
+//		frame.requestFocus();
 	}
 
 	static void moveCatcherRight(Field field, Item item) {
-		field.moveRIGHT(Constants.MOVE_DISTANCE, item);
+		for (int i = Constants.PITCHER_MOVE_DISTANCE; i > 0; i /= 2)
+			field.moveRIGHT(i, item);
+//			if (field.moveRIGHT(i, item) == 1)
+//				break;
 	}
 
 	static void moveCatcherLeft(Field field, Item item) {
-		field.moveLEFT(Constants.MOVE_DISTANCE, item);
+		for (int i = Constants.PITCHER_MOVE_DISTANCE; i > 0; i /= 2)
+			field.moveLEFT(i, item);
+//			if (field.moveLEFT(i, item) == 1)
+//				break;
 	}
 
+	static void finalAction(byte action, Field field) {
+		if (field == null)
+			return;
+
+		switch (action) {
+		case 1:
+			finalSentence(action, field);
+			closing();
+		case 2:
+			finalSentence(action, field);
+			closing();
+		default:
+			return;
+		}
+	}
+
+	private static void finalSentence(byte action, Field field) {
+		System.out.println("Player " + action + " wins!");
+	}
+
+	private static void closing() {
+		System.exit(0);
+	}
 }

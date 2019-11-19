@@ -6,7 +6,7 @@ public class Field {
 
 	private Item[][] pixel;
 	private ArrayList<Item> itemList = new ArrayList<>();
-	private int brickCount = 0;
+//	private int brickCount = 0;
 
 	Field(int dimX, int dimY) {
 
@@ -22,22 +22,17 @@ public class Field {
 		this.fillNull(0, 0, this.getDimX(), this.getDimY());
 	}
 
-	public void brickCountUp() {
-		this.brickCount++;
-	}
-
-	public void brickCountDown() {
-
-//		if (brickCount == 0)
-//			return false;
-
-		this.brickCount--;
-//		return true;
-	}
-
-	public int getBrickCount() {
-		return this.brickCount;
-	}
+//	public void brickCountUp() {
+//		this.brickCount++;
+//	}
+//
+//	public void brickCountDown() {
+//		this.brickCount--;
+//	}
+//
+//	public int getBrickCount() {
+//		return this.brickCount;
+//	}
 
 	public int getDimX() {
 		return this.pixel.length;
@@ -75,8 +70,8 @@ public class Field {
 		if (this.putItem(item.getX(), item.getY(), item) == 1) {
 			this.itemList.add(item);
 
-			if (item.getTyp() == "Brick")
-				this.brickCountUp();
+//			if (item.getTyp() == "Brick")
+//				this.brickCountUp();
 
 			return true;
 		}
@@ -142,8 +137,12 @@ public class Field {
 		byte check = this.putItem(newX, newY, item);
 
 		if (check != 1)
-
 			setItem(posX, posY, item);
+
+		if (check == -10)
+			Starter.finalAction((byte) 1, this);
+		if (check == -20)
+			Starter.finalAction((byte) 2, this);
 
 		return check;
 
@@ -195,14 +194,22 @@ public class Field {
 		int width = item.getWidth() + x;
 		int heigth = item.getHeigth() + y;
 
-		if (x < 0 || y < 0 || width > this.getDimX() || heigth > this.getDimY())
-			return -1;
+		if (y < 0)
+			return -10;
+
+		if (heigth > this.getDimY())
+			return -20;
+
+		if (x < 0)
+			return -30;
+
+		if (width > this.getDimX())
+			return -40;
 
 		for (int i = x; i < width; i++)
 			for (int j = y; j < heigth; j++) {
-//				System.out.println(i + " " + j + " " + this.pixel[i][j]);
-				if (this.pixel[i][j] != null) {
-//					System.out.println("!!!" + i + " " + j);
+				Item thisPixel = this.pixel[i][j];
+				if (thisPixel != null && thisPixel != item) {
 					return 0;
 				}
 			}
@@ -211,16 +218,25 @@ public class Field {
 
 	}
 
-	public byte checkPixel(int x, int y) {
-
-		if (x < 0 || y < 0 || x > this.getDimX() || y > this.getDimY())
-			return -1;
-
-		if (this.pixel[x][y] != null)
-			return 0;
-
-		return 1;
-	}
+//	public byte checkPixel(int x, int y) {
+//
+//		if (y < 0)
+//			return -10;
+//
+//		if (y > this.getDimY())
+//			return -20;
+//
+//		if (x < 0)
+//			return -30;
+//
+//		if (x > this.getDimX())
+//			return -40;
+//
+//		if (this.pixel[x][y] != null)
+//			return 0;
+//
+//		return 1;
+//	}
 
 //	public byte checkLEFT(Item item) {
 //
@@ -314,8 +330,17 @@ public class Field {
 		Item nextItem = getPixel(item.getX() - 1, item.getY() + (item.getHeigth() / 2));
 
 		if (nextItem != null) {
+			if (nextItem.getTyp() == "Pitcher" && item.getTyp() == "Bullet")
+				return fixRate(item, nextItem);
 			if (nextItem.getTyp() != "Brick")
 				return 0;
+
+			Brick brick = (Brick) nextItem;
+
+			if (brick.getThickness() == 2) {
+				brick.setThickness((byte) 1);
+				return 0;
+			}
 			if (moveLEFT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
@@ -333,8 +358,17 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + item.getWidth() + 1, item.getY() + (item.getHeigth() / 2));
 
 		if (nextItem != null) {
+			if (nextItem.getTyp() == "Pitcher" && item.getTyp() == "Bullet")
+				return fixRate(item, nextItem);
 			if (nextItem.getTyp() != "Brick")
 				return 0;
+
+			Brick brick = (Brick) nextItem;
+
+			if (brick.getThickness() == 2) {
+				brick.setThickness((byte) 1);
+				return 0;
+			}
 			if (moveRIGHT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
@@ -351,8 +385,17 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + (item.getWidth() / 2), item.getY() - 1);
 
 		if (nextItem != null) {
+			if (nextItem.getTyp() == "Pitcher" && item.getTyp() == "Bullet")
+				return fixRate(item, nextItem);
 			if (nextItem.getTyp() != "Brick")
 				return 0;
+
+			Brick brick = (Brick) nextItem;
+
+			if (brick.getThickness() == 2) {
+				brick.setThickness((byte) 1);
+				return 0;
+			}
 			if (moveUP(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
@@ -369,14 +412,58 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + (item.getWidth() / 2), item.getY() + item.getHeigth() + 1);
 
 		if (nextItem != null) {
+//			System.out.println(nextItem.getTyp()+" "+item.getTyp());
+
+			if (nextItem.getTyp() == "Pitcher" && item.getTyp() == "Bullet")
+				return fixRate(item, nextItem);
 			if (nextItem.getTyp() != "Brick")
 				return 0;
+
+			Brick brick = (Brick) nextItem;
+
+			if (brick.getThickness() == 2) {
+				brick.setThickness((byte) 1);
+				return 0;
+			}
 			if (moveDOWN(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
 			return 0;
 		}
 
 		return 1;
+	}
+
+	public byte fixRate(Item item, Item pitcher) {
+
+		if (item == null || item.getTyp() != "Bullet")
+			return -2;
+
+		Bullet bullet = (Bullet) item;
+
+		int bulletX = bullet.getX() + bullet.getWidth() / 2;
+
+		int pitcherX = pitcher.getX() + pitcher.getWidth() / 2;
+		int pitcherWidth = pitcher.getWidth() / 2;
+		int pitcherMain = (int) ((double) pitcherWidth * 0.7);
+		int pitcherMid = (int) ((double) pitcherWidth * 0.2);
+
+//		System.out.println(pitcherWidth + " " + pitcherMain + " " + pitcherMid);
+
+		if (bulletX > pitcherX - pitcherMid && bulletX < pitcherX + pitcherMid) {
+			bullet.halfRateX();
+			bullet.normalRateY();
+			return 0;
+		}
+
+		if (bulletX > pitcherX - pitcherMain && bulletX < pitcherX + pitcherMain) {
+			bullet.normalRateY();
+			bullet.normalRateX();
+			return 0;
+		}
+
+		bullet.halfRateY();
+		bullet.normalRateX();
+		return 0;
 	}
 
 	public byte eliminateItem(Item item) {
@@ -396,14 +483,10 @@ public class Field {
 
 		ArrayList<Item> list = getItemList();
 
-//		System.out.println(getItemList().size());
-
 		eraseItem(item);
 
-		if (item.getTyp() == "Brick") {
-			this.brickCountDown();
-//			System.out.println(this.getBrickCount());
-		}
+//		if (item.getTyp() == "Brick")
+//			this.brickCountDown();
 
 		try {
 			Thread.sleep(1);
@@ -423,9 +506,5 @@ public class Field {
 
 		if (list.size() == 1)
 			System.exit(0);
-
-//		System.out.println(getItemList().size());
-
 	}
-
 }

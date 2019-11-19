@@ -34,7 +34,7 @@ public class BulletThread implements Runnable {
 	}
 
 	static void move(Bullet bullet, Field field) {
-//		for (;;) {
+
 		if (field.hitRIGHT(bullet) != 1) {
 			bullet.setRight(false);
 			bullet.setLeft(true);
@@ -52,25 +52,26 @@ public class BulletThread implements Runnable {
 			bullet.setDown(false);
 		}
 
+		bullet.switchRateX();
+		bullet.switchRateY();
+
 		if (bullet.getLeft())
-			field.moveLEFT(bullet);
-
+			if (bullet.getRateX() < 2)
+				field.moveLEFT(2,bullet);
 		if (bullet.getRight())
-			field.moveRIGHT(bullet);
-
+			if (bullet.getRateX() < 2)
+				field.moveRIGHT(2,bullet);
 		if (bullet.getUp())
-			field.moveUP(bullet);
-
+			if (bullet.getRateY() < 2)
+				field.moveUP(2,bullet);
 		if (bullet.getDown() == true)
-			field.moveDOWN(bullet);
+			if (bullet.getRateY() < 2)
+				field.moveDOWN(2,bullet);
 
 		try {
 			Thread.sleep(Constants.BULLET_DELAY);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		Starter.frame.repaint();
-//		}
 	}
 }
