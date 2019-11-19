@@ -137,7 +137,7 @@ class Brick extends Moveable {
 		int random = (int) (Math.random() * 7);
 
 		switch (random) {
-		case 0:
+		case 0: 
 			return Color.RED;
 		case 1:
 			return Color.GREEN;

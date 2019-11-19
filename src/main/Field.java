@@ -437,7 +437,7 @@ public class Field {
 
 		if (item == null || item.getTyp() != "Bullet")
 			return -2;
-
+ 
 		Bullet bullet = (Bullet) item;
 
 		int bulletX = bullet.getX() + bullet.getWidth() / 2;

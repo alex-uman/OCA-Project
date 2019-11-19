@@ -16,7 +16,7 @@ public class Constants {
 	static final int BRICK_HEIGTH = 30;
 
 	static final int BULLET_WIDTH = 20;
-	static final int BULLET_HEIGTH = BULLET_WIDTH;
+	static final int BULLET_HEIGTH = BULLET_WIDTH; 
 
 	static final int PITCHER_WIDTH = 100;
 	static final int PITCHER_HEIGTH = 20;

@@ -41,7 +41,7 @@ public class BulletThread implements Runnable {
 		}
 		if (field.hitLEFT(bullet) != 1) {
 			bullet.setRight(true);
-			bullet.setLeft(false);
+			bullet.setLeft(false); 
 		}
 		if (field.hitUP(bullet) != 1) {
 			bullet.setUp(false);

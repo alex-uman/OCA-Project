@@ -14,7 +14,7 @@ public class PitcherAIThread implements Runnable {
 		this.bulletUp = bulletUp;
 		this.bulletDown = bulletDown;
 		this.pitcherUp = pitcherUp;
-	}
+	} 
 
 	public void run() {
 		Thread thread = Thread.currentThread();
