@@ -1,10 +1,13 @@
 package testing;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 final public class Tester {
 
@@ -21,7 +24,7 @@ final public class Tester {
 	boolean left = false;
 	boolean right = true;
 
-	static final String IMG_PATH = "C:\\Locate\\Workspace\\Images\\";
+	static final String IMG_PATH = "e:\\Workspace\\Images\\";
 
 	static final BufferedImage BG = setImage("grass.png");
 

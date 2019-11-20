@@ -1,16 +1,14 @@
 package testing;
 
-import javax.swing.*;
-
-import testing.Tester.DrawPanel;
-
-import java.awt.*;
-import java.awt.event.KeyAdapter;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Dog {
 
@@ -27,7 +25,7 @@ public class Dog {
 	boolean left = false;
 	boolean right = true;
 
-	static final String IMG_PATH = "C:\\Locate\\Workspace\\Images\\";
+	static final String IMG_PATH = "E:\\Workspace\\Images\\";
 
 	static final BufferedImage BG = setImage("grass.png");
 
