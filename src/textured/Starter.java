@@ -30,7 +30,7 @@ public class Starter {
 
 		public void paintComponent(Graphics g) {
 
-			g.setColor(Color.BLACK);
+			g.setColor(new Color(0,0,150));
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
 			int size = this.field.getItemList().size();
