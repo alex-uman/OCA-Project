@@ -21,5 +21,5 @@ public class Constants {
 	static final int PITCHER_WIDTH = 100;
 	static final int PITCHER_HEIGTH = 20;
 
-	static final int BULLET_DELAY = 12;
+	static final int BULLET_DELAY = 8;
 }

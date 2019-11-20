@@ -57,16 +57,16 @@ public class BulletThread implements Runnable {
 
 		if (bullet.getLeft())
 			if (bullet.getRateX() < 2)
-				field.moveLEFT(2,bullet);
+				field.moveLEFT(bullet);
 		if (bullet.getRight())
 			if (bullet.getRateX() < 2)
-				field.moveRIGHT(2,bullet);
+				field.moveRIGHT(bullet);
 		if (bullet.getUp())
 			if (bullet.getRateY() < 2)
-				field.moveUP(2,bullet);
+				field.moveUP(bullet);
 		if (bullet.getDown() == true)
 			if (bullet.getRateY() < 2)
-				field.moveDOWN(2,bullet);
+				field.moveDOWN(bullet);
 
 		try {
 			Thread.sleep(Constants.BULLET_DELAY);

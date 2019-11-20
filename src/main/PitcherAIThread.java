@@ -14,7 +14,7 @@ public class PitcherAIThread implements Runnable {
 		this.bulletUp = bulletUp;
 		this.bulletDown = bulletDown;
 		this.pitcherUp = pitcherUp;
-	} 
+	}
 
 	public void run() {
 		Thread thread = Thread.currentThread();
@@ -36,19 +36,22 @@ public class PitcherAIThread implements Runnable {
 
 	static void move(Bullet bulletUp, Bullet bulletDown, Pitcher pitcherUp, Field field) {
 
-		int x = bulletUp.getY() < bulletDown.getY() ? bulletUp.getX() : bulletDown.getX();
+		Bullet bullet = bulletUp.getY() < bulletDown.getY() ? bulletUp : bulletDown;
 
-		if (pitcherUp.getX() < x)
-			field.moveRIGHT(pitcherUp);
-		else if (pitcherUp.getX() > x)
-			field.moveLEFT(pitcherUp);
+		if (bullet.getY() < field.getDimY() / 2) {
+			int x = bullet.getX();
 
-		try {
-			Thread.sleep(1);
-		} catch (Exception e) {
-			e.printStackTrace();
+			if (pitcherUp.getX() < x)
+				field.moveRIGHT(pitcherUp);
+			else if (pitcherUp.getX() > x)
+				field.moveLEFT(pitcherUp);
+
+			try {
+				Thread.sleep(1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-
 		Starter.frame.repaint();
 	}
 }
