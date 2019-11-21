@@ -1,6 +1,7 @@
 package textured;
 
 public class Constants {
+
 	static final int DIM_X = 524;
 	static final int DIM_Y = 729;
 
@@ -21,9 +22,9 @@ public class Constants {
 	static final int PITCHER_WIDTH = 100;
 	static final int PITCHER_HEIGTH = 20;
 
-	static final int BULLET_DELAY = 8;
+	static final int BULLET_DELAY = 6;
 
-	static final String PATH = "E:\\Workspace\\OCA-Project\\Images\\";
+	static final String PATH = "src\\";
 
 	static final String BRICK_BLUE = PATH + "Gem_Blue.png";
 	static final String BRICK_GREEN = PATH + "Gem_Green.png";
@@ -31,4 +32,5 @@ public class Constants {
 	static final String BRICK_ORANGE = PATH + "Gem_Orange.png";
 	static final String BRICK_PINK = PATH + "Gem_Pink.png";
 	static final String BRICK_CAGE = PATH + "Gem_Cage.png";
+
 }

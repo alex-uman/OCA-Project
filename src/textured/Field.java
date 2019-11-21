@@ -197,7 +197,7 @@ public class Field {
 		if (y < 0)
 			return -10;
 
-		if (heigth > this.getDimY())
+		if (heigth > this.getDimY() - Constants.MARGIN_Y / 2)
 			return -20;
 
 		if (x < 0)
@@ -217,110 +217,6 @@ public class Field {
 		return 1;
 
 	}
-
-//	public byte checkPixel(int x, int y) {
-//
-//		if (y < 0)
-//			return -10;
-//
-//		if (y > this.getDimY())
-//			return -20;
-//
-//		if (x < 0)
-//			return -30;
-//
-//		if (x > this.getDimX())
-//			return -40;
-//
-//		if (this.pixel[x][y] != null)
-//			return 0;
-//
-//		return 1;
-//	}
-
-//	public byte checkLEFT(Item item) {
-//
-//		if (item == null)
-//			return -2;
-//
-//		int x = item.getX() - 1;
-//		int y = item.getY();
-//		int size = y + item.getHeigth();
-//		byte check;
-//
-//		for (int i = y; i < size; i++) {
-//
-//			check = checkPixel(x, i);
-//
-//			if (check != 1)
-//				return check;
-//		}
-//
-//		return 1;
-//	}
-//
-//	public byte checkRIGHT(Item item) {
-//
-//		if (item == null)
-//			return -2;
-//
-//		int x = item.getX() + item.getWidth() + 1;
-//		int y = item.getY();
-//		int size = y + item.getHeigth();
-//		byte check;
-//
-//		for (int i = y; i < size; i++) {
-//
-//			check = checkPixel(x, i);
-//
-//			if (check != 1)
-//				return check;
-//		}
-//
-//		return 1;
-//	}
-//
-//	public byte checkUP(Item item) {
-//
-//		if (item == null)
-//			return -2;
-//
-//		int x = item.getX();
-//		int y = item.getY() - 1;
-//		int size = x + item.getWidth();
-//		byte check;
-//
-//		for (int i = x; i < size; i++) {
-//
-//			check = checkPixel(i, y);
-//
-//			if (check != 1)
-//				return check;
-//		}
-//
-//		return 1;
-//	}
-//
-//	public byte checkDOWN(Item item) {
-//
-//		if (item == null)
-//			return -2;
-//
-//		int x = item.getX();
-//		int y = item.getY() + item.getHeigth() + 1;
-//		int size = x + item.getWidth();
-//		byte check;
-//
-//		for (int i = x; i < size; i++) {
-//
-//			check = checkPixel(i, y);
-//
-//			if (check != 1)
-//				return check;
-//		}
-//
-//		return 1;
-//	}
 
 	public byte hitLEFT(Item item) {
 
@@ -437,7 +333,7 @@ public class Field {
 
 		if (item == null || item.getTyp() != "Bullet")
 			return -2;
- 
+
 		Bullet bullet = (Bullet) item;
 
 		int bulletX = bullet.getX() + bullet.getWidth() / 2;

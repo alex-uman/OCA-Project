@@ -85,6 +85,8 @@ public class Starter {
 
 		BufferedImage image = null;
 
+		System.out.println(Starter.class.getResource(file));
+		
 		try {
 			image = ImageIO.read(new File(file));
 		} catch (Exception e) {
