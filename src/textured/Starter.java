@@ -234,7 +234,7 @@ public class Starter {
 	}
 
 	static void setField(Field field, Item pitcherDown) {
-		frame = new JFrame("Suppressor");
+		frame = new JFrame("Brickdance");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		drawPanel = new DrawPanel(field);
