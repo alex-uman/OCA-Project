@@ -233,8 +233,8 @@ public class Field {
 
 			Brick brick = (Brick) nextItem;
 
-			if (brick.getThickness() == 2) {
-				brick.setThickness((byte) 1);
+			if (brick.getThickness() > 1) {
+				brick.setThickness((byte) (brick.getThickness() - 1));
 				return 0;
 			}
 			if (moveLEFT(Constants.MOVE_DISTANCE, nextItem) != 1)
@@ -261,8 +261,8 @@ public class Field {
 
 			Brick brick = (Brick) nextItem;
 
-			if (brick.getThickness() == 2) {
-				brick.setThickness((byte) 1);
+			if (brick.getThickness() > 1) {
+				brick.setThickness((byte) (brick.getThickness() - 1));
 				return 0;
 			}
 			if (moveRIGHT(Constants.MOVE_DISTANCE, nextItem) != 1)
@@ -288,8 +288,8 @@ public class Field {
 
 			Brick brick = (Brick) nextItem;
 
-			if (brick.getThickness() == 2) {
-				brick.setThickness((byte) 1);
+			if (brick.getThickness() > 1) {
+				brick.setThickness((byte) (brick.getThickness() - 1));
 				return 0;
 			}
 			if (moveUP(Constants.MOVE_DISTANCE, nextItem) != 1)
@@ -317,8 +317,8 @@ public class Field {
 
 			Brick brick = (Brick) nextItem;
 
-			if (brick.getThickness() == 2) {
-				brick.setThickness((byte) 1);
+			if (brick.getThickness() > 1) {
+				brick.setThickness((byte) (brick.getThickness() - 1));
 				return 0;
 			}
 			if (moveDOWN(Constants.MOVE_DISTANCE, nextItem) != 1)

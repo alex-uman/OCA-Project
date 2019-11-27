@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JWindow;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -30,7 +31,7 @@ public class Starter {
 
 		public void paintComponent(Graphics g) {
 
-			g.setColor(new Color(0,0,150));
+			g.setColor(new Color(0, 0, 150));
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
 			int size = this.field.getItemList().size();
@@ -54,10 +55,12 @@ public class Starter {
 
 						Brick brick = (Brick) item;
 
-						g.drawImage(setImage(brick.getColor()), brick.getX(), brick.getY(), this);
+						g.drawImage(setImage(brick.getColor()), brick.getX(), brick.getY(), brick.getWidth(),
+								brick.getHeigth(), this);
 
 						if (brick.getThickness() == 2)
-							g.drawImage(setImage(Constants.BRICK_CAGE), brick.getX(), brick.getY(), this);
+							g.drawImage(setImage(Constants.BRICK_CAGE), brick.getX(), brick.getY(), brick.getWidth(),
+									brick.getHeigth(), this);
 
 						break;
 
@@ -85,8 +88,8 @@ public class Starter {
 
 		BufferedImage image = null;
 
-		System.out.println(Starter.class.getResource(file));
-		
+//		System.out.println(Starter.class.getResource(file));
+
 		try {
 			image = ImageIO.read(new File(file));
 		} catch (Exception e) {
@@ -134,6 +137,11 @@ public class Starter {
 
 	public static void main(String[] args) {
 
+		System.out.println(Constants.DIM_X);
+		System.out.println(Constants.BORDER_THICK);
+		System.out.println(Constants.BRICK_WIDTH);
+		System.out.println((int) ((Constants.DIM_X - Constants.BORDER_THICK * 2)));
+
 		Field field = new Field(Constants.DIM_X, Constants.DIM_Y);
 
 		BulletDown bulletDown = new BulletDown();
@@ -174,15 +182,13 @@ public class Starter {
 
 		standardBorder(field);
 
-		brickRow(Constants.BORDER_THICK, 300, field);
+		int middle = (int) ((field.getDimY() - Constants.BRICK_HEIGTH) / 2);
 
-//		field.setItemList(new BrickHalf(4, 330));
+		brickRow(Constants.BORDER_THICK, middle - Constants.BRICK_HEIGTH, field);
 
-		brickRow(Constants.BORDER_THICK + Constants.BRICK_WIDTH / 2, 330, field, true);
+		brickRow(Constants.BORDER_THICK + Constants.BRICK_WIDTH / 2, middle, field, true);
 
-//		field.setItemList(new BrickHalf(479, 330));
-
-		brickRow(Constants.BORDER_THICK, 360, field);
+		brickRow(Constants.BORDER_THICK, middle + Constants.BRICK_HEIGTH, field);
 
 	}
 
@@ -211,7 +217,7 @@ public class Starter {
 
 	static void standardBorder(Field field) {
 		field.setItemList(new Border(0, 0, Constants.BORDER_THICK, field.getDimY() - Constants.MARGIN_Y));
-		field.setItemList(new Border(field.getDimX() - Constants.BORDER_THICK - 16, 0, Constants.BORDER_THICK,
+		field.setItemList(new Border(field.getDimX() - Constants.BORDER_THICK , 0, Constants.BORDER_THICK,
 				field.getDimY() - Constants.MARGIN_Y));
 
 		// field.setItemList(new Border(Constants.BORDER_THICK, 0, field.getDimX() -
@@ -240,12 +246,15 @@ public class Starter {
 		drawPanel = new DrawPanel(field);
 		frame.getContentPane().add(BorderLayout.CENTER, drawPanel);
 
+	
 		frame.setVisible(true);
+		frame.setAlwaysOnTop(true);
 		frame.setResizable(false);
 		frame.setSize(field.getDimX(), field.getDimY());
-		frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - field.getDimX()) / 2,
-				(Toolkit.getDefaultToolkit().getScreenSize().height - field.getDimY()) / 2 - Constants.MARGIN_Y / 2);
+		frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - field.getDimX()) / 2, 0);
 
+
+		
 		JButton button = new JButton();
 
 		button.addKeyListener(new KeyCatcher(field, pitcherDown));
