@@ -334,31 +334,37 @@ public class Field {
 		if (item == null || item.getTyp() != "Bullet")
 			return -2;
 
-		Bullet bullet = (Bullet) item;
+		Bullet thisBullet = (Bullet) item;
+		Pitcher thisPitcher = (Pitcher) pitcher;
 
-		int bulletX = bullet.getX() + bullet.getWidth() / 2;
+		if (thisPitcher.getSubTyp() == "Up")
+			thisBullet.setHitByUp(true);
+		else
+			thisBullet.setHitByUp(false);
 
-		int pitcherX = pitcher.getX() + pitcher.getWidth() / 2;
-		int pitcherWidth = pitcher.getWidth() / 2;
+		int bulletX = thisBullet.getX() + thisBullet.getWidth() / 2;
+
+		int pitcherX = thisPitcher.getX() + thisPitcher.getWidth() / 2;
+		int pitcherWidth = thisPitcher.getWidth() / 2;
 		int pitcherMain = (int) ((double) pitcherWidth * 0.7);
 		int pitcherMid = (int) ((double) pitcherWidth * 0.2);
 
 //		System.out.println(pitcherWidth + " " + pitcherMain + " " + pitcherMid);
 
 		if (bulletX > pitcherX - pitcherMid && bulletX < pitcherX + pitcherMid) {
-			bullet.halfRateX();
-			bullet.normalRateY();
+			thisBullet.halfRateX();
+			thisBullet.normalRateY();
 			return 0;
 		}
 
 		if (bulletX > pitcherX - pitcherMain && bulletX < pitcherX + pitcherMain) {
-			bullet.normalRateY();
-			bullet.normalRateX();
+			thisBullet.normalRateY();
+			thisBullet.normalRateX();
 			return 0;
 		}
 
-		bullet.halfRateY();
-		bullet.normalRateX();
+		thisBullet.halfRateY();
+		thisBullet.normalRateX();
 		return 0;
 	}
 

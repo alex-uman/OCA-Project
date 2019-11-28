@@ -66,6 +66,10 @@ public class Item {
 		return "Item";
 	}
 
+//	public String getSubTyp() {
+//		return this.getTyp();
+//	}
+
 	public String toString() {
 		return this.getTyp() + " " + this.getX() + " " + this.getY() + " " + this.getWidth() + " " + this.getHeigth();
 	}
@@ -149,14 +153,6 @@ class Brick extends Moveable {
 	}
 }
 
-//class ThickBrick extends Brick {
-//
-//	ThickBrick(int posX, int posY) {
-//		super(posX, posY);
-//		this.setThickness((byte) 2);
-//	}
-//}
-
 //class BrickHalf extends Brick {
 //
 //	BrickHalf(int posX, int posY) {
@@ -173,6 +169,7 @@ class Bullet extends Moveable {
 	private boolean down = false;
 	private byte rateX = 0;
 	private byte rateY = 0;
+	private boolean hitByUp = false;
 
 	Bullet(int posX, int posY) {
 		super(posX, posY, Constants.BULLET_WIDTH, Constants.BULLET_HEIGTH);
@@ -244,12 +241,26 @@ class Bullet extends Moveable {
 			this.rateY = this.rateY == 2 ? (byte) 1 : (byte) 2;
 	}
 
+	public void setHitByUp(boolean hit) {
+		this.hitByUp = hit;
+	}
+
+	public boolean getHitByUp() {
+		return this.hitByUp;
+	}
+
 	public String getTyp() {
 		return "Bullet";
 	}
+
+//	public String getSubTyp() {
+//		return "Up";
+//	}
 }
 
 class BulletUp extends Bullet {
+
+	private boolean hitByUp = true;
 
 	BulletUp() {
 		super((Constants.DIM_X - Constants.BULLET_WIDTH) / 2, Constants.BORDER_THICK + Constants.BULLET_HEIGTH + 2);
@@ -262,6 +273,10 @@ class BulletDown extends Bullet {
 		super((Constants.DIM_X - Constants.BULLET_WIDTH) / 2,
 				Constants.DIM_Y - 39 - Constants.BORDER_THICK - Constants.PITCHER_HEIGTH - Constants.BULLET_HEIGTH - 2);
 	}
+
+//	public String getSubTyp() {
+//		return "Down";
+//	}
 }
 
 class Pitcher extends Moveable {
@@ -272,6 +287,10 @@ class Pitcher extends Moveable {
 
 	public String getTyp() {
 		return "Pitcher";
+	}
+
+	public String getSubTyp() {
+		return "Up";
 	}
 }
 
@@ -289,4 +308,9 @@ class PitcherDown extends Pitcher {
 				Constants.DIM_Y - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2);// -
 		// Constants.BORDER_THICK);
 	}
+
+	public String getSubTyp() {
+		return "Down";
+	}
+
 }
