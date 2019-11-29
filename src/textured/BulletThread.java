@@ -2,13 +2,13 @@ package textured;
 
 public class BulletThread implements Runnable {
 
-	private Thread newThread;
+	private Thread bulletThread;
 
 	private Field field;
 	private Bullet bullet;
 
 	BulletThread(Bullet bullet, Field field) {
-		super();
+//		super();
 		this.field = field;
 		this.bullet = bullet;
 	}
@@ -18,18 +18,18 @@ public class BulletThread implements Runnable {
 
 		Thread thread = Thread.currentThread();
 
-		while (thread == newThread)
+		while (thread == bulletThread)
 			move(this.bullet, this.field);
 	}
 
 	public void stop() {
-		newThread = null;
+		bulletThread = null;
 	}
 
 	public void start() {
-		if (newThread == null) {
-			newThread = new Thread(this);
-			newThread.start();
+		if (bulletThread == null) {
+			bulletThread = new Thread(this);
+			bulletThread.start();
 		}
 	}
 
@@ -52,6 +52,14 @@ public class BulletThread implements Runnable {
 			bullet.setDown(false);
 		}
 
+//		String sym = bullet.getUp() + " " + bullet.getDown();
+//		if (bullet.getUp()&&!bullet.getDown())
+//			System.out.println("Down");
+//		else if (!bullet.getUp()&&bullet.getDown())
+//			System.out.println("Up");
+//		else
+//			System.out.println(sym);
+		
 		bullet.switchRateX();
 		bullet.switchRateY();
 

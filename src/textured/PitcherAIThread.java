@@ -1,17 +1,15 @@
 package textured;
 
-import textured.PitcherDown.Bullet;
-
 public class PitcherAIThread implements Runnable {
 
-	private Thread newThread;
+	private Thread pitcherThread;
 
 	private Field field;
 	private Bullet bulletUp, bulletDown;
 	private Pitcher pitcherUp;
 
 	PitcherAIThread(Bullet bulletUp, Bullet bulletDown, Pitcher pitcherUp, Field field) {
-		super();
+//		super();
 		this.field = field;
 		this.bulletUp = bulletUp;
 		this.bulletDown = bulletDown;
@@ -21,18 +19,18 @@ public class PitcherAIThread implements Runnable {
 	public void run() {
 		Thread thread = Thread.currentThread();
 
-		while (thread == newThread)
+		while (thread == pitcherThread)
 			move(this.bulletUp, this.bulletDown, this.pitcherUp, this.field);
 	}
 
 	public void stop() {
-		newThread = null;
+		pitcherThread = null;
 	}
 
 	public void start() {
-		if (newThread == null) {
-			newThread = new Thread(this);
-			newThread.start();
+		if (pitcherThread == null) {
+			pitcherThread = new Thread(this);
+			pitcherThread.start();
 		}
 	}
 

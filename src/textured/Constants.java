@@ -26,7 +26,7 @@ public class Constants {
 	static final int PITCHER_WIDTH = (int) (DIM_X / 5);
 	static final int PITCHER_HEIGTH = (int) (PITCHER_WIDTH / 5);
 
-	static final int BULLET_DELAY = (int) (DIM_X / 80);
+	static final int BULLET_DELAY = (int) (DIM_Y / 200);
 
 	static final String PATH = "src\\";
 

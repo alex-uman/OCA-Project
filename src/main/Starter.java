@@ -66,7 +66,7 @@ public class Starter {
 							g.setColor(new Color(255, 255, 255, 200));
 							g.fillRect(item.getX() + 3, item.getY() + 3, item.getWidth() - 6, item.getHeigth() - 6);
 						}
-						break; 
+						break;
 
 					case "Bullet":
 						g.setColor(Color.YELLOW);
@@ -113,14 +113,6 @@ public class Starter {
 		}
 
 		public void keyTyped(KeyEvent key) {
-			switch (key.getKeyCode()) {
-			case 37:
-				moveCatcherLeft(field, item);
-				break;
-			case 39:
-				moveCatcherRight(field, item);
-				break;
-			}
 		}
 	}
 

@@ -2,8 +2,6 @@ package textured;
 
 import java.util.ArrayList;
 
-import textured.PitcherDown.Bullet;
-
 public class Field {
 
 	private Item[][] pixel;
@@ -333,7 +331,7 @@ public class Field {
 
 	public byte fixRate(Item bullet, Item pitcher) {
 
-		if (bullet == null || bullet.getTyp() != "Bullet"||pitcher == null || pitcher.getTyp() != "Pitcher")
+		if (bullet == null || bullet.getTyp() != "Bullet" || pitcher == null || pitcher.getTyp() != "Pitcher")
 			return -2;
 
 		Bullet thisBullet = (Bullet) bullet;

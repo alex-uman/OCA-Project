@@ -10,7 +10,6 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JWindow;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -36,13 +35,13 @@ public class Starter {
 
 			int size = this.field.getItemList().size();
 
-//			Item item;
-
 			try {
 
 				for (int i = 0; i < size; i++) {
 
 					Item item = this.field.getItemList(i);
+
+//					System.out.println(item);
 
 					switch (item.getTyp()) {
 
@@ -88,13 +87,13 @@ public class Starter {
 
 		BufferedImage image = null;
 
-//		System.out.println(Starter.class.getResource(file));
-
 		try {
 			image = ImageIO.read(new File(file));
 		} catch (Exception e) {
-			System.out.println("\"" + file + "\" not found!");
+			throw new IllegalArgumentException("\"" + file + "\" not found!");
 		}
+
+//		System.out.println(Starter.class.getResource(file));
 
 		return image;
 	}
@@ -109,43 +108,37 @@ public class Starter {
 		}
 
 		public void keyPressed(KeyEvent key) {
-//			switch (key.getKeyCode()) {
-//			case 37:
-//				moveCatcherLeft(field, item);
-//				break;
-//			case 39:
-//				moveCatcherRight(field, item);
-//				break;
-//			}
-
+			catchKey(key);
 		}
 
 		public void keyReleased(KeyEvent key) {
 		}
 
 		public void keyTyped(KeyEvent key) {
+//			catchKey(key);
+		}
+
+		private void catchKey(KeyEvent key) {
 			switch (key.getKeyCode()) {
 			case 37:
 				moveCatcherLeft(field, item);
+				System.out.println("Left");
 				break;
 			case 39:
 				moveCatcherRight(field, item);
+				System.out.println("Right");
 				break;
 			}
 		}
+
 	}
 
 	public static void main(String[] args) {
 
-		System.out.println(Constants.DIM_X);
-		System.out.println(Constants.BORDER_THICK);
-		System.out.println(Constants.BRICK_WIDTH);
-		System.out.println((int) ((Constants.DIM_X - Constants.BORDER_THICK * 2)));
-
 		Field field = new Field(Constants.DIM_X, Constants.DIM_Y);
 
-		PitcherDown pitcherDown = setPitcherDown(field);
-		PitcherUp pitcherUp = setPitcherUp(field);
+		Pitcher pitcherDown = new Pitcher(false, field);
+		Pitcher pitcherUp = new Pitcher(true, field);
 
 		Bullet bulletDown = new Bullet(pitcherDown);
 		Bullet bulletUp = new Bullet(pitcherUp);
@@ -154,12 +147,13 @@ public class Starter {
 		BulletThread bulletUpThread = new BulletThread(bulletUp, field);
 		PitcherAIThread pitcherAI = new PitcherAIThread(bulletUp, bulletDown, pitcherUp, field);
 
-		fillField(field);
 		setField(field, pitcherDown);
 
 		bulletDownThread.start();
 		bulletUpThread.start();
 		pitcherAI.start();
+
+		fillField(field);
 
 		for (;;) {
 //			try {
@@ -183,12 +177,10 @@ public class Starter {
 
 		standardBorder(field);
 
-		int middle = (int) ((field.getDimY() - Constants.BRICK_HEIGTH) / 2);
+		int middle = (field.getDimY() - Constants.BRICK_HEIGTH) / 2;
 
 		brickRow(Constants.BORDER_THICK, middle - Constants.BRICK_HEIGTH, field);
-
 		brickRow(Constants.BORDER_THICK + Constants.BRICK_WIDTH / 2, middle, field, true);
-
 		brickRow(Constants.BORDER_THICK, middle + Constants.BRICK_HEIGTH, field);
 
 	}
@@ -220,23 +212,11 @@ public class Starter {
 		field.setItemList(new Border(field.getDimX() - Constants.BORDER_THICK, 0, Constants.BORDER_THICK,
 				field.getDimY() - Constants.MARGIN_Y));
 
-		// field.setItemList(new Border(Constants.BORDER_THICK, 0, field.getDimX() -
-		// (Constants.BORDER_THICK * 2) - 16,
+//		 field.setItemList(new Border(Constants.BORDER_THICK, 0, field.getDimX() -
+// 		(Constants.BORDER_THICK * 2) - 16,
 //				Constants.BORDER_THICK));
 //		field.setItemList(new Border(Constants.BORDER_THICK, field.getDimY() - 43,
 //				field.getDimX() - (Constants.BORDER_THICK * 2) - 16, Constants.BORDER_THICK));
-	}
-
-	static PitcherUp setPitcherUp(Field field) {
-		PitcherUp pitcherUp = new PitcherUp(field);
-		field.setItemList(pitcherUp);
-		return pitcherUp;
-	}
-
-	static PitcherDown setPitcherDown(Field field) {
-		PitcherDown pitcherDown = new PitcherDown(field);
-		field.setItemList(pitcherDown);
-		return pitcherDown;
 	}
 
 	static void setField(Field field, Item pitcherDown) {

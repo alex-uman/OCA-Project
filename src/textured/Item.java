@@ -123,7 +123,8 @@ class Brick extends Moveable {
 
 	private String RandomColor() {
 
-		int random = (int) (Math.random() * 7);
+		int random = (int) (Math.random() * 5);
+//		System.out.println(random);
 
 		switch (random) {
 		case 0:
@@ -140,165 +141,52 @@ class Brick extends Moveable {
 	}
 }
 
-//class BrickHalf extends Brick {
-//
-//	BrickHalf(int posX, int posY) {
-//		super(posX, posY);
-//		this.setWidth(this.getWidth() / 2);
-//	}
-//}
-
 class Pitcher extends Moveable {
 
-	private Field field;
+//	private Field field;
 
-	Pitcher(int posX, int posY, Field field) {
-		super(posX, posY, Constants.PITCHER_WIDTH, Constants.PITCHER_HEIGTH);
+	private boolean isUpper;
+
+	Pitcher(boolean isUpper, Field field) {
+		super((field.getDimX() - Constants.PITCHER_WIDTH) / 2,
+				isUpper == true ? 2 : field.getDimY() - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2,
+				Constants.PITCHER_WIDTH, Constants.PITCHER_HEIGTH);
 		if (field == null)
 			throw new IllegalArgumentException("No such field!");
-		else
-			this.field = field;
+		else {
+//			this.field = field;
+			this.isUpper = isUpper;
+
+			field.setItemList(this);
+		}
 	}
 
 	public String getTyp() {
 		return "Pitcher";
 	}
 
-	public boolean isPitcherUp() {
-		return true;
+	public boolean getIsUpper() {
+		return this.isUpper;
 	}
 }
 
-class PitcherUp extends Pitcher {
-
-	PitcherUp(Field field) {
-		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2, 2, field);// Constants.BORDER_THICK );
-	}
-}
-
-class PitcherDown extends Pitcher {
-
-	PitcherDown(Field field) {
-		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2,
-				Constants.DIM_Y - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2, field);// -
-		// Constants.BORDER_THICK);
-	}
-
-	public boolean isPitcherUp() {
-		return false;
-	}
-
-	class Bullet extends Moveable {
-
-		private boolean left = false;
-		private boolean right = true;
-		private boolean up = true;
-		private boolean down = false;
-		private byte rateX = 0;
-		private byte rateY = 0;
-		private Pitcher pitcher;
-
-		Bullet(Pitcher pitcher) {
-			super(pitcher.getX() + (pitcher.getWidth() - Constants.BULLET_WIDTH) / 2,
-					pitcher.isPitcherUp() == true ? pitcher.getY() + (pitcher.getHeigth() - Constants.BULLET_HEIGTH) / 2
-							: pitcher.getY() - (pitcher.getHeigth() - Constants.BULLET_HEIGTH) / 2,
-					Constants.BULLET_WIDTH, Constants.BULLET_HEIGTH);
-		}
-
-		public void setLeft(boolean val) {
-			this.left = val;
-		}
-
-		public void setRight(boolean val) {
-			this.right = val;
-		}
-
-		public void setUp(boolean val) {
-			this.up = val;
-		}
-
-		public void setDown(boolean val) {
-			this.down = val;
-		}
-
-		public boolean getLeft() {
-			return this.left;
-		}
-
-		public boolean getRight() {
-			return this.right;
-		}
-
-		public boolean getUp() {
-			return this.up;
-		}
-
-		public boolean getDown() {
-			return this.down;
-		}
-
-		public byte getRateX() {
-			return this.rateX;
-		}
-
-		public byte getRateY() {
-			return this.rateY;
-		}
-
-		public void halfRateX() {
-			this.rateX = 2;
-		}
-
-		public void normalRateX() {
-			this.rateX = 0;
-		}
-
-		public void halfRateY() {
-			this.rateY = 2;
-		}
-
-		public void normalRateY() {
-			this.rateY = 0;
-		}
-
-		public void switchRateX() {
-			if (this.rateX > 0)
-				this.rateX = this.rateX == 2 ? (byte) 1 : (byte) 2;
-		}
-
-		public void switchRateY() {
-			if (this.rateY > 0)
-				this.rateY = this.rateY == 2 ? (byte) 1 : (byte) 2;
-		}
-
-		public void setPitcher(Pitcher pitcher) {
-			this.pitcher = pitcher;
-		}
-
-		public Pitcher getPitcher() {
-			return this.pitcher;
-		}
-
-		public String getTyp() {
-			return "Bullet";
-		}
-	}
-
-//	class BulletUp extends Bullet {
+//class PitcherUp extends Pitcher {
 //
-//		private boolean hitByUp = true;
-//
-//		BulletUp() {
-//			super((Constants.DIM_X - Constants.BULLET_WIDTH) / 2, Constants.BORDER_THICK + Constants.BULLET_HEIGTH + 2);
-//		}
+//	PitcherUp(Field field) {
+//		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2, 2, field);// Constants.BORDER_THICK );
 //	}
 //
-//	class BulletDown extends Bullet {
+//}
 //
-//		BulletDown() {
-//			super((Constants.DIM_X - Constants.BULLET_WIDTH) / 2, Constants.DIM_Y - 39 - Constants.BORDER_THICK
-//					- Constants.PITCHER_HEIGTH - Constants.BULLET_HEIGTH - 2);
-//		}
+//class PitcherDown extends Pitcher {
+//
+//	PitcherDown(Field field) {
+//		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2,
+//				Constants.DIM_Y - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2, field);
+//		// - Constants.BORDER_THICK);
 //	}
-
-}
+//
+//	public boolean isPitcherUp() {
+//		return false;
+//	}
+//}
