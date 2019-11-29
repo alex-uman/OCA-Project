@@ -16,7 +16,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 public class Starter {
-
+ 
 	static JFrame frame;
 	static DrawPanel drawPanel;
 

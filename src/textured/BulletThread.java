@@ -1,7 +1,7 @@
 package textured;
 
 public class BulletThread implements Runnable {
-
+ 
 	private Thread bulletThread;
 
 	private Field field;

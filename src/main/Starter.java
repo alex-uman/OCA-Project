@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 //import java.awt.image.BufferedImage;
 //import java.io.File;
 //import javax.imageio.ImageIO;
-
+ 
 public class Starter {
 
 	static JFrame frame;

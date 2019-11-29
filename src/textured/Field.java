@@ -3,7 +3,7 @@ package textured;
 import java.util.ArrayList;
 
 public class Field {
-
+ 
 	private Item[][] pixel;
 	private ArrayList<Item> itemList = new ArrayList<>();
 //	private int brickCount = 0;

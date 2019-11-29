@@ -3,7 +3,7 @@ package textured;
 import java.awt.Toolkit;
 
 public class Constants {
-
+ 
 	static final int MARGIN_X = 24;
 	static final int MARGIN_Y = 39;
 

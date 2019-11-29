@@ -1,7 +1,7 @@
 package textured;
 
 public class PitcherAIThread implements Runnable {
-
+ 
 	private Thread pitcherThread;
 
 	private Field field;

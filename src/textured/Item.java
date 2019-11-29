@@ -4,7 +4,7 @@ public abstract class Item {
 
 	private int posX, posY, width, heigth;
 	private boolean moveable = false;
-
+ 
 	Item(int posX, int posY, int width, int heigth, boolean moveable) {
 		this.setX(posX);
 		this.setY(posY);

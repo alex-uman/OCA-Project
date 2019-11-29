@@ -1,7 +1,7 @@
 package textured;
 
 class Bullet extends Moveable {
-
+ 
 	private boolean left = false;
 	private boolean right = true;
 	private boolean up = true;
