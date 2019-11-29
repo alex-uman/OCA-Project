@@ -1,5 +1,7 @@
 package textured;
 
+import textured.PitcherDown.Bullet;
+
 public class PitcherAIThread implements Runnable {
 
 	private Thread newThread;

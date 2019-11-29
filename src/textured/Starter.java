@@ -109,14 +109,14 @@ public class Starter {
 		}
 
 		public void keyPressed(KeyEvent key) {
-			switch (key.getKeyCode()) {
-			case 37:
-				moveCatcherLeft(field, item);
-				break;
-			case 39:
-				moveCatcherRight(field, item);
-				break;
-			}
+//			switch (key.getKeyCode()) {
+//			case 37:
+//				moveCatcherLeft(field, item);
+//				break;
+//			case 39:
+//				moveCatcherRight(field, item);
+//				break;
+//			}
 
 		}
 
@@ -144,13 +144,14 @@ public class Starter {
 
 		Field field = new Field(Constants.DIM_X, Constants.DIM_Y);
 
-		BulletDown bulletDown = new BulletDown();
-		BulletThread bulletDownThread = new BulletThread(bulletDown, field);
-		BulletUp bulletUp = new BulletUp();
-		BulletThread bulletUpThread = new BulletThread(bulletUp, field);
-
 		PitcherDown pitcherDown = setPitcherDown(field);
 		PitcherUp pitcherUp = setPitcherUp(field);
+
+		Bullet bulletDown = new Bullet(pitcherDown);
+		Bullet bulletUp = new Bullet(pitcherUp);
+
+		BulletThread bulletDownThread = new BulletThread(bulletDown, field);
+		BulletThread bulletUpThread = new BulletThread(bulletUp, field);
 		PitcherAIThread pitcherAI = new PitcherAIThread(bulletUp, bulletDown, pitcherUp, field);
 
 		fillField(field);
@@ -207,7 +208,6 @@ public class Starter {
 			if (x > width)
 				return true;
 			x += brick.getWidth();
-
 		}
 	}
 
@@ -217,7 +217,7 @@ public class Starter {
 
 	static void standardBorder(Field field) {
 		field.setItemList(new Border(0, 0, Constants.BORDER_THICK, field.getDimY() - Constants.MARGIN_Y));
-		field.setItemList(new Border(field.getDimX() - Constants.BORDER_THICK , 0, Constants.BORDER_THICK,
+		field.setItemList(new Border(field.getDimX() - Constants.BORDER_THICK, 0, Constants.BORDER_THICK,
 				field.getDimY() - Constants.MARGIN_Y));
 
 		// field.setItemList(new Border(Constants.BORDER_THICK, 0, field.getDimX() -
@@ -228,13 +228,13 @@ public class Starter {
 	}
 
 	static PitcherUp setPitcherUp(Field field) {
-		PitcherUp pitcherUp = new PitcherUp();
+		PitcherUp pitcherUp = new PitcherUp(field);
 		field.setItemList(pitcherUp);
 		return pitcherUp;
 	}
 
 	static PitcherDown setPitcherDown(Field field) {
-		PitcherDown pitcherDown = new PitcherDown();
+		PitcherDown pitcherDown = new PitcherDown(field);
 		field.setItemList(pitcherDown);
 		return pitcherDown;
 	}
@@ -246,15 +246,12 @@ public class Starter {
 		drawPanel = new DrawPanel(field);
 		frame.getContentPane().add(BorderLayout.CENTER, drawPanel);
 
-	
 		frame.setVisible(true);
 		frame.setAlwaysOnTop(true);
 		frame.setResizable(false);
 		frame.setSize(field.getDimX(), field.getDimY());
 		frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - field.getDimX()) / 2, 0);
 
-
-		
 		JButton button = new JButton();
 
 		button.addKeyListener(new KeyCatcher(field, pitcherDown));

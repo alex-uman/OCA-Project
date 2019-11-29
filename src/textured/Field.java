@@ -2,6 +2,8 @@ package textured;
 
 import java.util.ArrayList;
 
+import textured.PitcherDown.Bullet;
+
 public class Field {
 
 	private Item[][] pixel;
@@ -11,7 +13,7 @@ public class Field {
 	Field(int dimX, int dimY) {
 
 		if (dimX < 1 && dimY < 1)
-			throw new IllegalStateException("False Field declaration!");
+			throw new IllegalArgumentException("False Field declaration!");
 
 		this.pixel = new Item[dimX][dimY];
 
@@ -124,7 +126,7 @@ public class Field {
 
 	public byte moveItem(int x, int y, Item item) {
 
-		if (!item.Moveable())
+		if (!item.getMoveable())
 			return -3;
 
 		int posX = item.getX();
@@ -329,18 +331,15 @@ public class Field {
 		return 1;
 	}
 
-	public byte fixRate(Item item, Item pitcher) {
+	public byte fixRate(Item bullet, Item pitcher) {
 
-		if (item == null || item.getTyp() != "Bullet")
+		if (bullet == null || bullet.getTyp() != "Bullet"||pitcher == null || pitcher.getTyp() != "Pitcher")
 			return -2;
 
-		Bullet thisBullet = (Bullet) item;
+		Bullet thisBullet = (Bullet) bullet;
 		Pitcher thisPitcher = (Pitcher) pitcher;
 
-		if (thisPitcher.getSubTyp() == "Up")
-			thisBullet.setHitByUp(true);
-		else
-			thisBullet.setHitByUp(false);
+		thisBullet.setPitcher(thisPitcher);
 
 		int bulletX = thisBullet.getX() + thisBullet.getWidth() / 2;
 
@@ -373,7 +372,7 @@ public class Field {
 		if (item == null)
 			return -2;
 
-		if (!item.Moveable())
+		if (!item.getMoveable())
 			return -3;
 
 		removeItem(item);
