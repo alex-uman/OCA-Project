@@ -37,5 +37,8 @@ public class Constants {
 	static final String BRICK_PINK = PATH + "Gem_Pink.png";
 	static final String BRICK_CAGE = PATH + "Gem_Cage.png";
 	static final String FIELD_BG = PATH + "Field.png";
+	static final String BALL_1 = PATH + "Ball-1.png";
+	static final String BALL_2 = PATH + "Ball-2.png";
+	static final String BALL_3 = PATH + "Ball-3.png";
 
 }
