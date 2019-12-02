@@ -26,7 +26,7 @@ public class Constants {
 	static final int PITCHER_WIDTH = (int) (DIM_X / 5);
 	static final int PITCHER_HEIGTH = (int) (PITCHER_WIDTH / 5);
 
-	static final int BULLET_DELAY = (int) (DIM_Y / 200);
+	static final int BULLET_DELAY = (int) (DIM_Y / 150);
 
 	static final String PATH = "src\\";
 
@@ -36,5 +36,6 @@ public class Constants {
 	static final String BRICK_ORANGE = PATH + "Gem_Orange.png";
 	static final String BRICK_PINK = PATH + "Gem_Pink.png";
 	static final String BRICK_CAGE = PATH + "Gem_Cage.png";
+	static final String FIELD_BG = PATH + "Field.png";
 
 }

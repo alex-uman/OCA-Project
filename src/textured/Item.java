@@ -10,6 +10,7 @@ public abstract class Item {
 		this.setY(posY);
 		this.setWidth(width);
 		this.setHeigth(heigth);
+		this.moveable=moveable;
 
 	}
 

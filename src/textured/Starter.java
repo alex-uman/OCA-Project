@@ -16,7 +16,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 public class Starter {
- 
+
 	static JFrame frame;
 	static DrawPanel drawPanel;
 
@@ -33,15 +33,15 @@ public class Starter {
 			g.setColor(new Color(0, 0, 150));
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
+			g.drawImage(setImage(Constants.FIELD_BG), 0, 0, field.getDimX(), field.getDimY(), this);
+
 			int size = this.field.getItemList().size();
 
-			try {
+			for (int i = 0; i < size; i++) {
 
-				for (int i = 0; i < size; i++) {
+				Item item = this.field.getItemList(i);
 
-					Item item = this.field.getItemList(i);
-
-//					System.out.println(item);
+				if (item != null) {
 
 					switch (item.getTyp()) {
 
@@ -60,7 +60,6 @@ public class Starter {
 						if (brick.getThickness() == 2)
 							g.drawImage(setImage(Constants.BRICK_CAGE), brick.getX(), brick.getY(), brick.getWidth(),
 									brick.getHeigth(), this);
-
 						break;
 
 					case "Bullet":
@@ -77,8 +76,6 @@ public class Starter {
 
 					}
 				}
-			} catch (NullPointerException e) {
-				System.out.println("!!!");
 			}
 		}
 	}
@@ -122,11 +119,9 @@ public class Starter {
 			switch (key.getKeyCode()) {
 			case 37:
 				moveCatcherLeft(field, item);
-				System.out.println("Left");
 				break;
 			case 39:
 				moveCatcherRight(field, item);
-				System.out.println("Right");
 				break;
 			}
 		}
@@ -211,12 +206,6 @@ public class Starter {
 		field.setItemList(new Border(0, 0, Constants.BORDER_THICK, field.getDimY() - Constants.MARGIN_Y));
 		field.setItemList(new Border(field.getDimX() - Constants.BORDER_THICK, 0, Constants.BORDER_THICK,
 				field.getDimY() - Constants.MARGIN_Y));
-
-//		 field.setItemList(new Border(Constants.BORDER_THICK, 0, field.getDimX() -
-// 		(Constants.BORDER_THICK * 2) - 16,
-//				Constants.BORDER_THICK));
-//		field.setItemList(new Border(Constants.BORDER_THICK, field.getDimY() - 43,
-//				field.getDimX() - (Constants.BORDER_THICK * 2) - 16, Constants.BORDER_THICK));
 	}
 
 	static void setField(Field field, Item pitcherDown) {
