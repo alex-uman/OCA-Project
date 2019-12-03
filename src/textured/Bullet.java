@@ -10,7 +10,7 @@ class Bullet extends Moveable {
 	private byte rateY = 0;
 	private Pitcher pitcher;
 	private int count = 0;
-	private int ticker = 0;
+	private int fps = 1;
 
 	Bullet(Pitcher pitcher) {
 		super(pitcher.getX() + (pitcher.getWidth() - Constants.BULLET_WIDTH) / 2,
@@ -42,12 +42,28 @@ class Bullet extends Moveable {
 		this.count = count;
 	}
 
-	public void setTicker(int ticker) {
-		this.ticker = ticker;
+	public void riseCount() {
+		this.count++;
 	}
 
-	public int getTicker() {
-		return this.ticker;
+	public void resetCount() {
+		this.count = 0;
+	}
+
+	public void setFPS(int fps) {
+		this.fps = fps;
+	}
+
+	public void riseFPS() {
+		this.fps++;
+	}
+
+	public void resetFPS() {
+		this.fps = 1;
+	}
+
+	public int getFPS() {
+		return this.fps;
 	}
 
 	public int getCount() {

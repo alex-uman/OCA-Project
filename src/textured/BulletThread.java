@@ -35,8 +35,6 @@ public class BulletThread implements Runnable {
 
 	static void move(Bullet bullet, Field field) {
 
-		System.out.println(bullet.getPitcher() + " " + bullet.getImage());
-
 		if (field.hitRIGHT(bullet) != 1) {
 			bullet.setRight(false);
 			bullet.setLeft(true);
@@ -70,19 +68,21 @@ public class BulletThread implements Runnable {
 			if (bullet.getRateY() < 2)
 				field.moveDOWN(bullet);
 
-		int ticker = bullet.getTicker();
-		if (bullet.getTicker() < Constants.TICKER - 1) {
-			bullet.setTicker(++ticker);
-		} else {
-			bullet.setTicker(0);
+		int fps = bullet.getFPS();
+		if (fps < Constants.FPS)
+			bullet.riseFPS();
+		else {
+			bullet.resetFPS();
 
 			int count = bullet.getCount();
-
 			if (count < Constants.BALL.length - 1)
-				bullet.setCount(++count);
+				bullet.riseCount();
 			else
-				bullet.setCount(0);
+				bullet.resetCount();
+
 			bullet.setImage(Constants.BALL[count]);
+
+//			System.out.println(bullet.getPitcher() + " " + bullet.getImage() + " " + count);
 		}
 
 		try {

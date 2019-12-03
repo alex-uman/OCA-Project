@@ -28,7 +28,7 @@ public class Constants {
 	static final int PITCHER_WIDTH = DIM_X / 5;
 	static final int PITCHER_HEIGTH = PITCHER_WIDTH / 5;
 
-	static final int BULLET_DELAY = DIM_Y / 150;
+	static final int BULLET_DELAY = DIM_Y / 100;
 
 	static final String PATH = "src\\";
 
@@ -49,8 +49,9 @@ public class Constants {
 	static final String BALL_1 = PATH + "Ball-1.png";
 	static final String BALL_2 = PATH + "Ball-2.png";
 	static final String BALL_3 = PATH + "Ball-3.png";
-	static final String[] BALL = { BALL_1, BALL_2, BALL_3, BALL_2 };
+	static final String BALL_4 = PATH + "Ball-4.png";
+	static final String BALL_5 = PATH + "Ball-5.png";
+	static final String[] BALL = { BALL_1, BALL_2, BALL_3, BALL_4, BALL_5 };
 
-	static final int TICKER = 50;
-
+	static final int FPS = 25;
 }
