@@ -43,37 +43,14 @@ public class Starter {
 
 				if (item != null) {
 
-					switch (item.getTyp()) {
+					g.drawImage(setImage(item.getImage()), item.getX(), item.getY(), item.getWidth(), item.getHeigth(),
+							this);
 
-					case "Border":
-						g.setColor(Color.WHITE);
-						g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
-						break;
-
-					case "Brick":
-
+					if (item.getTyp() == "Brick") {
 						Brick brick = (Brick) item;
-
-						g.drawImage(setImage(brick.getColor()), brick.getX(), brick.getY(), brick.getWidth(),
-								brick.getHeigth(), this);
-
 						if (brick.getThickness() == 2)
-							g.drawImage(setImage(Constants.BRICK_CAGE), brick.getX(), brick.getY(), brick.getWidth(),
-									brick.getHeigth(), this);
-						break;
-
-					case "Bullet":
-						g.setColor(Color.YELLOW);
-						g.fillOval(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
-						break;
-
-					case "Pitcher":
-						g.setColor(Color.WHITE);
-						g.fillRect(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
-						g.setColor(Color.BLACK);
-						g.fillRect(item.getX() + 2, item.getY() + 2, item.getWidth() - 5, item.getHeigth() - 5);
-						break;
-
+							g.drawImage(setImage(Constants.BRICK_CAGE), item.getX(), item.getY(), item.getWidth(),
+									item.getHeigth(), this);
 					}
 				}
 			}
@@ -133,30 +110,31 @@ public class Starter {
 		Field field = new Field(Constants.DIM_X, Constants.DIM_Y);
 
 		Pitcher pitcherDown = new Pitcher(false, field);
-		Pitcher pitcherUp = new Pitcher(true, field);
-
 		Bullet bulletDown = new Bullet(pitcherDown);
-		Bullet bulletUp = new Bullet(pitcherUp);
-
 		BulletThread bulletDownThread = new BulletThread(bulletDown, field);
-		BulletThread bulletUpThread = new BulletThread(bulletUp, field);
+
+		Pitcher pitcherUp = new Pitcher(true, field);
+		Bullet bulletUp = new Bullet(pitcherUp);
 		PitcherAIThread pitcherAI = new PitcherAIThread(bulletUp, bulletDown, pitcherUp, field);
+		BulletThread bulletUpThread = new BulletThread(bulletUp, field);
 
 		setField(field, pitcherDown);
-
-		bulletDownThread.start();
-		bulletUpThread.start();
-		pitcherAI.start();
-
 		fillField(field);
 
-		for (;;) {
+		pitcherAI.start();
+		bulletDownThread.start();
+		bulletUpThread.start();
+
+//		for (;;) {
+//
+//			frame.repaint();
+//
 //			try {
 //				Thread.sleep(100);
 //			} catch (Exception e) {
 //				e.printStackTrace();
 //			}
-
+//
 //			if (field.getBrickCount() < 1) {
 //
 //				bulletUpThread.stop();
@@ -165,7 +143,7 @@ public class Starter {
 //
 //				closing();
 //			}
-		}
+//		}
 	}
 
 	static void fillField(Field field) {
@@ -225,11 +203,6 @@ public class Starter {
 
 		button.addKeyListener(new KeyCatcher(field, pitcherDown));
 		frame.add(button);
-
-//		frame.setExtendedState(JFrame.ICONIFIED);
-//		frame.setExtendedState(JFrame.NORMAL);
-//		frame.toFront();
-//		frame.requestFocus();
 	}
 
 	static void moveCatcherRight(Field field, Item item) {

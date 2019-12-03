@@ -124,6 +124,18 @@ public class Field {
 
 	public byte moveItem(int x, int y, Item item) {
 
+		if (item == null)
+			return -2;
+
+		if (item.getTyp() == "Brick") {
+			Brick brick = (Brick) item;
+			if (brick.getThickness() > 1) {
+				brick.setThickness((byte) (brick.getThickness() - 1));
+//				System.out.println("t " + ++Constants.hitCount);
+				return 1;
+			}
+		}
+
 		if (!item.getMoveable())
 			return -3;
 
@@ -145,7 +157,6 @@ public class Field {
 			Starter.finalAction((byte) 2, this);
 
 		return check;
-
 	}
 
 	public boolean nullArea(int x, int y, int width, int heigth) {
@@ -161,6 +172,9 @@ public class Field {
 
 	private void setItem(int x, int y, Item item) {
 
+		if (item == null)
+			return;
+
 		int width = item.getWidth() + x;
 		int heigth = item.getHeigth() + y;
 
@@ -173,6 +187,9 @@ public class Field {
 	}
 
 	private void eraseItem(Item item) {
+		if (item == null)
+			return;
+
 		fillNull(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
 	}
 
@@ -213,9 +230,7 @@ public class Field {
 					return 0;
 				}
 			}
-
 		return 1;
-
 	}
 
 	public byte hitLEFT(Item item) {
@@ -231,14 +246,9 @@ public class Field {
 			if (nextItem.getTyp() != "Brick")
 				return 0;
 
-			Brick brick = (Brick) nextItem;
-
-			if (brick.getThickness() > 1) {
-				brick.setThickness((byte) (brick.getThickness() - 1));
-				return 0;
-			}
 			if (moveLEFT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
+
 			return 0;
 		}
 
@@ -259,14 +269,9 @@ public class Field {
 			if (nextItem.getTyp() != "Brick")
 				return 0;
 
-			Brick brick = (Brick) nextItem;
-
-			if (brick.getThickness() > 1) {
-				brick.setThickness((byte) (brick.getThickness() - 1));
-				return 0;
-			}
 			if (moveRIGHT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
+
 			return 0;
 		}
 
@@ -286,14 +291,9 @@ public class Field {
 			if (nextItem.getTyp() != "Brick")
 				return 0;
 
-			Brick brick = (Brick) nextItem;
-
-			if (brick.getThickness() > 1) {
-				brick.setThickness((byte) (brick.getThickness() - 1));
-				return 0;
-			}
 			if (moveUP(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
+
 			return 0;
 		}
 
@@ -308,21 +308,14 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + (item.getWidth() / 2), item.getY() + item.getHeigth() + 1);
 
 		if (nextItem != null) {
-//			System.out.println(nextItem.getTyp()+" "+item.getTyp());
-
 			if (nextItem.getTyp() == "Pitcher" && item.getTyp() == "Bullet")
 				return fixRate(item, nextItem);
 			if (nextItem.getTyp() != "Brick")
 				return 0;
 
-			Brick brick = (Brick) nextItem;
-
-			if (brick.getThickness() > 1) {
-				brick.setThickness((byte) (brick.getThickness() - 1));
-				return 0;
-			}
 			if (moveDOWN(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
+
 			return 0;
 		}
 

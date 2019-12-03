@@ -1,7 +1,7 @@
 package textured;
 
 public class BulletThread implements Runnable {
- 
+
 	private Thread bulletThread;
 
 	private Field field;
@@ -35,6 +35,8 @@ public class BulletThread implements Runnable {
 
 	static void move(Bullet bullet, Field field) {
 
+		System.out.println(bullet.getPitcher() + " " + bullet.getImage());
+
 		if (field.hitRIGHT(bullet) != 1) {
 			bullet.setRight(false);
 			bullet.setLeft(true);
@@ -52,14 +54,6 @@ public class BulletThread implements Runnable {
 			bullet.setDown(false);
 		}
 
-//		String sym = bullet.getUp() + " " + bullet.getDown();
-//		if (bullet.getUp()&&!bullet.getDown())
-//			System.out.println("Down");
-//		else if (!bullet.getUp()&&bullet.getDown())
-//			System.out.println("Up");
-//		else
-//			System.out.println(sym);
-		
 		bullet.switchRateX();
 		bullet.switchRateY();
 
@@ -76,10 +70,29 @@ public class BulletThread implements Runnable {
 			if (bullet.getRateY() < 2)
 				field.moveDOWN(bullet);
 
+		int ticker = bullet.getTicker();
+		if (bullet.getTicker() < Constants.TICKER - 1) {
+			bullet.setTicker(++ticker);
+		} else {
+			bullet.setTicker(0);
+
+			int count = bullet.getCount();
+
+			if (count < Constants.BALL.length - 1)
+				bullet.setCount(++count);
+			else
+				bullet.setCount(0);
+			bullet.setImage(Constants.BALL[count]);
+		}
+
 		try {
 			Thread.sleep(Constants.BULLET_DELAY);
+
+			Starter.frame.repaint();
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("bbb");
+//			e.printStackTrace();
 		}
 	}
 }

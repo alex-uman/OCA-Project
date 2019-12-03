@@ -4,14 +4,19 @@ public abstract class Item {
 
 	private int posX, posY, width, heigth;
 	private boolean moveable = false;
- 
+	private String image = "";
+
 	Item(int posX, int posY, int width, int heigth, boolean moveable) {
 		this.setX(posX);
 		this.setY(posY);
 		this.setWidth(width);
 		this.setHeigth(heigth);
-		this.moveable=moveable;
+		this.moveable = moveable;
 
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public void setX(int posX) {
@@ -33,6 +38,10 @@ public abstract class Item {
 
 	public void setHeigth(int heigth) {
 		this.heigth = heigth;
+	}
+
+	public String getImage() {
+		return image;
 	}
 
 	public int getX() {
@@ -60,7 +69,8 @@ public abstract class Item {
 	}
 
 	public String toString() {
-		return this.getTyp() + " " + this.getX() + " " + this.getY() + " " + this.getWidth() + " " + this.getHeigth();
+		return this.getTyp() + " " + this.getY() + " " + this.getX(); // + " " + this.getWidth() + " " +
+																		// this.getHeigth();
 	}
 }
 
@@ -90,6 +100,7 @@ class Border extends Immobile {
 
 	Border(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);
+		this.setImage(Constants.BORDER);
 	}
 
 	public String getTyp() {
@@ -99,19 +110,15 @@ class Border extends Immobile {
 
 class Brick extends Moveable {
 
-	private String color = RandomColor();
 	private byte thickness = 1;
 
 	Brick(int posX, int posY) {
 		super(posX, posY, Constants.BRICK_WIDTH, Constants.BRICK_HEIGTH);
+		this.setImage(RandomColor());
 	}
 
 	public String getTyp() {
 		return "Brick";
-	}
-
-	public String getColor() {
-		return this.color;
 	}
 
 	public byte getThickness() {
@@ -144,22 +151,19 @@ class Brick extends Moveable {
 
 class Pitcher extends Moveable {
 
-//	private Field field;
-
 	private boolean isUpper;
 
 	Pitcher(boolean isUpper, Field field) {
 		super((field.getDimX() - Constants.PITCHER_WIDTH) / 2,
-				isUpper == true ? 2 : field.getDimY() - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2,
+				isUpper ? 2 : field.getDimY() - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2,
 				Constants.PITCHER_WIDTH, Constants.PITCHER_HEIGTH);
-		if (field == null)
-			throw new IllegalArgumentException("No such field!");
-		else {
-//			this.field = field;
-			this.isUpper = isUpper;
+		this.isUpper = isUpper;
+		this.setImage(isUpper ? Constants.PITCHER_UP : Constants.PITCHER_DOWN);
+		field.setItemList(this);
+	}
 
-			field.setItemList(this);
-		}
+	Pitcher(Field field) {
+		this(true, field);
 	}
 
 	public String getTyp() {
@@ -170,24 +174,3 @@ class Pitcher extends Moveable {
 		return this.isUpper;
 	}
 }
-
-//class PitcherUp extends Pitcher {
-//
-//	PitcherUp(Field field) {
-//		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2, 2, field);// Constants.BORDER_THICK );
-//	}
-//
-//}
-//
-//class PitcherDown extends Pitcher {
-//
-//	PitcherDown(Field field) {
-//		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2,
-//				Constants.DIM_Y - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2, field);
-//		// - Constants.BORDER_THICK);
-//	}
-//
-//	public boolean isPitcherUp() {
-//		return false;
-//	}
-//}

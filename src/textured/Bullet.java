@@ -1,7 +1,7 @@
 package textured;
 
 class Bullet extends Moveable {
- 
+
 	private boolean left = false;
 	private boolean right = true;
 	private boolean up = true;
@@ -9,12 +9,17 @@ class Bullet extends Moveable {
 	private byte rateX = 0;
 	private byte rateY = 0;
 	private Pitcher pitcher;
+	private int count = 0;
+	private int ticker = 0;
 
 	Bullet(Pitcher pitcher) {
 		super(pitcher.getX() + (pitcher.getWidth() - Constants.BULLET_WIDTH) / 2,
 				pitcher.getIsUpper() == true ? pitcher.getY() + pitcher.getHeigth()
 						: pitcher.getY() - Constants.BULLET_HEIGTH,
 				Constants.BULLET_WIDTH, Constants.BULLET_HEIGTH);
+
+		this.pitcher = pitcher;
+		this.setImage(Constants.BALL[count]);
 	}
 
 	public void setLeft(boolean val) {
@@ -31,6 +36,22 @@ class Bullet extends Moveable {
 
 	public void setDown(boolean val) {
 		this.down = val;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public void setTicker(int ticker) {
+		this.ticker = ticker;
+	}
+
+	public int getTicker() {
+		return this.ticker;
+	}
+
+	public int getCount() {
+		return this.count;
 	}
 
 	public boolean getLeft() {

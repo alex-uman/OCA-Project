@@ -1,7 +1,7 @@
 package textured;
 
 public class PitcherAIThread implements Runnable {
- 
+
 	private Thread pitcherThread;
 
 	private Field field;
@@ -38,18 +38,20 @@ public class PitcherAIThread implements Runnable {
 
 		Bullet bullet = bulletUp.getY() < bulletDown.getY() ? bulletUp : bulletDown;
 
-		if (bullet.getY() < field.getDimY() / 2) {
-			int x = bullet.getX();
+		if (bullet.getY() < field.getDimY() / 3) {
+			int bX = bullet.getX() + bullet.getWidth() / 2;
+			int pX = pitcherUp.getX() + pitcherUp.getWidth() / 2;
 
-			if (pitcherUp.getX() < x)
+			if (pX < bX)
 				field.moveRIGHT(pitcherUp);
-			else if (pitcherUp.getX() > x)
+			else if (pX > bX)
 				field.moveLEFT(pitcherUp);
 
 			try {
 				Thread.sleep(1);
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("ppp");
+//				e.printStackTrace();
 			}
 		}
 		Starter.frame.repaint();
