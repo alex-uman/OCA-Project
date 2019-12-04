@@ -1,18 +1,22 @@
 package main;
 
-import java.awt.Color;
-
-public class Item {
+public abstract class Item {
 
 	private int posX, posY, width, heigth;
 	private boolean moveable = false;
+	private String image = "";
 
-	Item(int posX, int posY, int width, int heigth) {
+	Item(int posX, int posY, int width, int heigth, boolean moveable) {
 		this.setX(posX);
 		this.setY(posY);
 		this.setWidth(width);
 		this.setHeigth(heigth);
+		this.moveable = moveable;
 
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	public void setX(int posX) {
@@ -36,12 +40,8 @@ public class Item {
 		this.heigth = heigth;
 	}
 
-	public void setMobile() {
-		moveable = true;
-	}
-
-	public void setImmobile() {
-		moveable = false;
+	public String getImage() {
+		return image;
 	}
 
 	public int getX() {
@@ -60,7 +60,7 @@ public class Item {
 		return heigth;
 	}
 
-	public boolean Moveable() {
+	public boolean getMoveable() {
 		return moveable;
 	}
 
@@ -69,15 +69,15 @@ public class Item {
 	}
 
 	public String toString() {
-		return this.getTyp() + " " + this.getX() + " " + this.getY() + " " + this.getWidth() + " " + this.getHeigth();
+		return this.getTyp() + " " + this.getY() + " " + this.getX(); // + " " + this.getWidth() + " " +
+																		// this.getHeigth();
 	}
 }
 
-class Moveable extends Item {
+abstract class Moveable extends Item {
 
 	Moveable(int posX, int posY, int width, int height) {
-		super(posX, posY, width, height);
-		this.setMobile();
+		super(posX, posY, width, height, true);
 	}
 
 	public String getTyp() {
@@ -85,10 +85,10 @@ class Moveable extends Item {
 	}
 }
 
-class Immobile extends Item {
+abstract class Immobile extends Item {
 
 	Immobile(int posX, int posY, int width, int height) {
-		super(posX, posY, width, height);
+		super(posX, posY, width, height, false);
 	}
 
 	public String getTyp() {
@@ -100,6 +100,7 @@ class Border extends Immobile {
 
 	Border(int posX, int posY, int width, int height) {
 		super(posX, posY, width, height);
+		this.setImage(Constants.BORDER);
 	}
 
 	public String getTyp() {
@@ -109,19 +110,15 @@ class Border extends Immobile {
 
 class Brick extends Moveable {
 
-	private Color color = RandomColor();
 	private byte thickness = 1;
 
 	Brick(int posX, int posY) {
 		super(posX, posY, Constants.BRICK_WIDTH, Constants.BRICK_HEIGTH);
+		this.setImage(RandomColor());
 	}
 
 	public String getTyp() {
 		return "Brick";
-	}
-
-	public Color getColor() {
-		return this.color;
 	}
 
 	public byte getThickness() {
@@ -132,165 +129,48 @@ class Brick extends Moveable {
 		this.thickness = thickness;
 	}
 
-	private Color RandomColor() {
+	private String RandomColor() {
 
-		int random = (int) (Math.random() * 7);
+		int random = (int) (Math.random() * 5);
+//		System.out.println(random);
 
 		switch (random) {
-		case 0: 
-			return Color.RED;
+		case 0:
+			return Constants.BRICK_BLUE;
 		case 1:
-			return Color.GREEN;
+			return Constants.BRICK_GREEN;
 		case 2:
-			return Color.BLUE;
+			return Constants.BRICK_MAGENTA;
 		case 3:
-			return Color.MAGENTA;
-		case 4:
-			return Color.CYAN;
+			return Constants.BRICK_ORANGE;
 		default:
-			return Color.ORANGE;
+			return Constants.BRICK_PINK;
 		}
-	}
-}
-
-//class ThickBrick extends Brick {
-//
-//	ThickBrick(int posX, int posY) {
-//		super(posX, posY);
-//		this.setThickness((byte) 2);
-//	}
-//}
-
-//class BrickHalf extends Brick {
-//
-//	BrickHalf(int posX, int posY) {
-//		super(posX, posY);
-//		this.setWidth(this.getWidth() / 2);
-//	}
-//}
-
-class Bullet extends Moveable {
-
-	private boolean left = false;
-	private boolean right = true;
-	private boolean up = true;
-	private boolean down = false;
-	private byte rateX = 0;
-	private byte rateY = 0;
-
-	Bullet(int posX, int posY) {
-		super(posX, posY, Constants.BULLET_WIDTH, Constants.BULLET_HEIGTH);
-	}
-
-	public void setLeft(boolean val) {
-		this.left = val;
-	}
-
-	public void setRight(boolean val) {
-		this.right = val;
-	}
-
-	public void setUp(boolean val) {
-		this.up = val;
-	}
-
-	public void setDown(boolean val) {
-		this.down = val;
-	}
-
-	public boolean getLeft() {
-		return this.left;
-	}
-
-	public boolean getRight() {
-		return this.right;
-	}
-
-	public boolean getUp() {
-		return this.up;
-	}
-
-	public boolean getDown() {
-		return this.down;
-	}
-
-	public byte getRateX() {
-		return this.rateX;
-	}
-
-	public byte getRateY() {
-		return this.rateY;
-	}
-
-	public void halfRateX() {
-		this.rateX = 2;
-	}
-
-	public void normalRateX() {
-		this.rateX = 0;
-	}
-
-	public void halfRateY() {
-		this.rateY = 2;
-	}
-
-	public void normalRateY() {
-		this.rateY = 0;
-	}
-
-	public void switchRateX() {
-		if (this.rateX > 0)
-			this.rateX = this.rateX == 2 ? (byte) 1 : (byte) 2;
-	}
-
-	public void switchRateY() {
-		if (this.rateY > 0)
-			this.rateY = this.rateY == 2 ? (byte) 1 : (byte) 2;
-	}
-
-	public String getTyp() {
-		return "Bullet";
-	}
-}
-
-class BulletUp extends Bullet {
-
-	BulletUp() {
-		super((Constants.DIM_X - Constants.BULLET_WIDTH) / 2, Constants.BORDER_THICK + Constants.BULLET_HEIGTH + 2);
-	}
-}
-
-class BulletDown extends Bullet {
-
-	BulletDown() {
-		super((Constants.DIM_X - Constants.BULLET_WIDTH) / 2,
-				Constants.DIM_Y - 39 - Constants.BORDER_THICK - Constants.PITCHER_HEIGTH - Constants.BULLET_HEIGTH - 2);
 	}
 }
 
 class Pitcher extends Moveable {
 
-	Pitcher(int posX, int posY) {
-		super(posX, posY, Constants.PITCHER_WIDTH, Constants.PITCHER_HEIGTH);
+	private boolean isUpper;
+
+	Pitcher(boolean isUpper, Field field) {
+		super((field.getDimX() - Constants.PITCHER_WIDTH) / 2,
+				isUpper ? 2 : field.getDimY() - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2,
+				Constants.PITCHER_WIDTH, Constants.PITCHER_HEIGTH);
+		this.isUpper = isUpper;
+		this.setImage(isUpper ? Constants.PITCHER_UP : Constants.PITCHER_DOWN);
+		field.setItemList(this);
+	}
+
+	Pitcher(Field field) {
+		this(true, field);
 	}
 
 	public String getTyp() {
 		return "Pitcher";
 	}
-}
 
-class PitcherUp extends Pitcher {
-
-	PitcherUp() {
-		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2, 2);// Constants.BORDER_THICK );
-	}
-}
-
-class PitcherDown extends Pitcher {
-
-	PitcherDown() {
-		super((Constants.DIM_X - Constants.PITCHER_WIDTH) / 2,
-				Constants.DIM_Y - Constants.MARGIN_Y - Constants.PITCHER_HEIGTH - 2);// -
-		// Constants.BORDER_THICK);
+	public boolean getIsUpper() {
+		return this.isUpper;
 	}
 }

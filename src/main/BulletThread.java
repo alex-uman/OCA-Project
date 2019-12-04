@@ -2,13 +2,13 @@ package main;
 
 public class BulletThread implements Runnable {
 
-	private Thread newThread;
+	private Thread bulletThread;
 
 	private Field field;
 	private Bullet bullet;
 
 	BulletThread(Bullet bullet, Field field) {
-		super();
+//		super();
 		this.field = field;
 		this.bullet = bullet;
 	}
@@ -18,18 +18,18 @@ public class BulletThread implements Runnable {
 
 		Thread thread = Thread.currentThread();
 
-		while (thread == newThread)
+		while (thread == bulletThread)
 			move(this.bullet, this.field);
 	}
 
 	public void stop() {
-		newThread = null;
+		bulletThread = null;
 	}
 
 	public void start() {
-		if (newThread == null) {
-			newThread = new Thread(this);
-			newThread.start();
+		if (bulletThread == null) {
+			bulletThread = new Thread(this);
+			bulletThread.start();
 		}
 	}
 
@@ -41,7 +41,7 @@ public class BulletThread implements Runnable {
 		}
 		if (field.hitLEFT(bullet) != 1) {
 			bullet.setRight(true);
-			bullet.setLeft(false); 
+			bullet.setLeft(false);
 		}
 		if (field.hitUP(bullet) != 1) {
 			bullet.setUp(false);
@@ -68,10 +68,31 @@ public class BulletThread implements Runnable {
 			if (bullet.getRateY() < 2)
 				field.moveDOWN(bullet);
 
+		int fps = bullet.getFPS();
+		if (fps < Constants.FPS)
+			bullet.riseFPS();
+		else {
+			bullet.resetFPS();
+
+			int count = bullet.getCount();
+			if (count < Constants.BALL.length - 1)
+				bullet.riseCount();
+			else
+				bullet.resetCount();
+
+			bullet.setImage(Constants.BALL[count]);
+
+//			System.out.println(bullet.getPitcher() + " " + bullet.getImage() + " " + count);
+		}
+
 		try {
 			Thread.sleep(Constants.BULLET_DELAY);
+
+			Starter.frame.repaint();
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("bbb");
+//			e.printStackTrace();
 		}
 	}
 }

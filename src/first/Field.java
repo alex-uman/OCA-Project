@@ -1,4 +1,4 @@
-package textured;
+package first;
 
 import java.util.ArrayList;
 
@@ -11,7 +11,7 @@ public class Field {
 	Field(int dimX, int dimY) {
 
 		if (dimX < 1 && dimY < 1)
-			throw new IllegalArgumentException("False Field declaration!");
+			throw new IllegalStateException("False Field declaration!");
 
 		this.pixel = new Item[dimX][dimY];
 
@@ -124,19 +124,7 @@ public class Field {
 
 	public byte moveItem(int x, int y, Item item) {
 
-		if (item == null)
-			return -2;
-
-		if (item.getTyp() == "Brick") {
-			Brick brick = (Brick) item;
-			if (brick.getThickness() > 1) {
-				brick.setThickness((byte) (brick.getThickness() - 1));
-//				System.out.println("t " + ++Constants.hitCount);
-				return 1;
-			}
-		}
-
-		if (!item.getMoveable())
+		if (!item.Moveable())
 			return -3;
 
 		int posX = item.getX();
@@ -157,6 +145,7 @@ public class Field {
 			Starter.finalAction((byte) 2, this);
 
 		return check;
+
 	}
 
 	public boolean nullArea(int x, int y, int width, int heigth) {
@@ -172,9 +161,6 @@ public class Field {
 
 	private void setItem(int x, int y, Item item) {
 
-		if (item == null)
-			return;
-
 		int width = item.getWidth() + x;
 		int heigth = item.getHeigth() + y;
 
@@ -187,9 +173,6 @@ public class Field {
 	}
 
 	private void eraseItem(Item item) {
-		if (item == null)
-			return;
-
 		fillNull(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
 	}
 
@@ -214,7 +197,7 @@ public class Field {
 		if (y < 0)
 			return -10;
 
-		if (heigth > this.getDimY() - Constants.MARGIN_Y / 2)
+		if (heigth > this.getDimY())
 			return -20;
 
 		if (x < 0)
@@ -230,8 +213,114 @@ public class Field {
 					return 0;
 				}
 			}
+
 		return 1;
+
 	}
+
+//	public byte checkPixel(int x, int y) {
+//
+//		if (y < 0)
+//			return -10;
+//
+//		if (y > this.getDimY())
+//			return -20;
+//
+//		if (x < 0)
+//			return -30;
+//
+//		if (x > this.getDimX())
+//			return -40;
+//
+//		if (this.pixel[x][y] != null)
+//			return 0;
+//
+//		return 1;
+//	}
+
+//	public byte checkLEFT(Item item) {
+//
+//		if (item == null)
+//			return -2;
+//
+//		int x = item.getX() - 1;
+//		int y = item.getY();
+//		int size = y + item.getHeigth();
+//		byte check;
+//
+//		for (int i = y; i < size; i++) {
+//
+//			check = checkPixel(x, i);
+//
+//			if (check != 1)
+//				return check;
+//		}
+//
+//		return 1;
+//	}
+//
+//	public byte checkRIGHT(Item item) {
+//
+//		if (item == null)
+//			return -2;
+//
+//		int x = item.getX() + item.getWidth() + 1;
+//		int y = item.getY();
+//		int size = y + item.getHeigth();
+//		byte check;
+//
+//		for (int i = y; i < size; i++) {
+//
+//			check = checkPixel(x, i);
+//
+//			if (check != 1)
+//				return check;
+//		}
+//
+//		return 1;
+//	}
+//
+//	public byte checkUP(Item item) {
+//
+//		if (item == null)
+//			return -2;
+//
+//		int x = item.getX();
+//		int y = item.getY() - 1;
+//		int size = x + item.getWidth();
+//		byte check;
+//
+//		for (int i = x; i < size; i++) {
+//
+//			check = checkPixel(i, y);
+//
+//			if (check != 1)
+//				return check;
+//		}
+//
+//		return 1;
+//	}
+//
+//	public byte checkDOWN(Item item) {
+//
+//		if (item == null)
+//			return -2;
+//
+//		int x = item.getX();
+//		int y = item.getY() + item.getHeigth() + 1;
+//		int size = x + item.getWidth();
+//		byte check;
+//
+//		for (int i = x; i < size; i++) {
+//
+//			check = checkPixel(i, y);
+//
+//			if (check != 1)
+//				return check;
+//		}
+//
+//		return 1;
+//	}
 
 	public byte hitLEFT(Item item) {
 
@@ -246,9 +335,14 @@ public class Field {
 			if (nextItem.getTyp() != "Brick")
 				return 0;
 
+			Brick brick = (Brick) nextItem;
+
+			if (brick.getThickness() == 2) {
+				brick.setThickness((byte) 1);
+				return 0;
+			}
 			if (moveLEFT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
-
 			return 0;
 		}
 
@@ -269,9 +363,14 @@ public class Field {
 			if (nextItem.getTyp() != "Brick")
 				return 0;
 
+			Brick brick = (Brick) nextItem;
+
+			if (brick.getThickness() == 2) {
+				brick.setThickness((byte) 1);
+				return 0;
+			}
 			if (moveRIGHT(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
-
 			return 0;
 		}
 
@@ -291,9 +390,14 @@ public class Field {
 			if (nextItem.getTyp() != "Brick")
 				return 0;
 
+			Brick brick = (Brick) nextItem;
+
+			if (brick.getThickness() == 2) {
+				brick.setThickness((byte) 1);
+				return 0;
+			}
 			if (moveUP(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
-
 			return 0;
 		}
 
@@ -308,53 +412,57 @@ public class Field {
 		Item nextItem = getPixel(item.getX() + (item.getWidth() / 2), item.getY() + item.getHeigth() + 1);
 
 		if (nextItem != null) {
+//			System.out.println(nextItem.getTyp()+" "+item.getTyp());
+
 			if (nextItem.getTyp() == "Pitcher" && item.getTyp() == "Bullet")
 				return fixRate(item, nextItem);
 			if (nextItem.getTyp() != "Brick")
 				return 0;
 
+			Brick brick = (Brick) nextItem;
+
+			if (brick.getThickness() == 2) {
+				brick.setThickness((byte) 1);
+				return 0;
+			}
 			if (moveDOWN(Constants.MOVE_DISTANCE, nextItem) != 1)
 				eliminateItem(nextItem);
-
 			return 0;
 		}
 
 		return 1;
 	}
 
-	public byte fixRate(Item bullet, Item pitcher) {
+	public byte fixRate(Item item, Item pitcher) {
 
-		if (bullet == null || bullet.getTyp() != "Bullet" || pitcher == null || pitcher.getTyp() != "Pitcher")
+		if (item == null || item.getTyp() != "Bullet")
 			return -2;
+ 
+		Bullet bullet = (Bullet) item;
 
-		Bullet thisBullet = (Bullet) bullet;
-		Pitcher thisPitcher = (Pitcher) pitcher;
+		int bulletX = bullet.getX() + bullet.getWidth() / 2;
 
-		thisBullet.setPitcher(thisPitcher);
-
-		int bulletX = thisBullet.getX() + thisBullet.getWidth() / 2;
-
-		int pitcherX = thisPitcher.getX() + thisPitcher.getWidth() / 2;
-		int pitcherWidth = thisPitcher.getWidth() / 2;
+		int pitcherX = pitcher.getX() + pitcher.getWidth() / 2;
+		int pitcherWidth = pitcher.getWidth() / 2;
 		int pitcherMain = (int) ((double) pitcherWidth * 0.7);
 		int pitcherMid = (int) ((double) pitcherWidth * 0.2);
 
 //		System.out.println(pitcherWidth + " " + pitcherMain + " " + pitcherMid);
 
 		if (bulletX > pitcherX - pitcherMid && bulletX < pitcherX + pitcherMid) {
-			thisBullet.halfRateX();
-			thisBullet.normalRateY();
+			bullet.halfRateX();
+			bullet.normalRateY();
 			return 0;
 		}
 
 		if (bulletX > pitcherX - pitcherMain && bulletX < pitcherX + pitcherMain) {
-			thisBullet.normalRateY();
-			thisBullet.normalRateX();
+			bullet.normalRateY();
+			bullet.normalRateX();
 			return 0;
 		}
 
-		thisBullet.halfRateY();
-		thisBullet.normalRateX();
+		bullet.halfRateY();
+		bullet.normalRateX();
 		return 0;
 	}
 
@@ -363,7 +471,7 @@ public class Field {
 		if (item == null)
 			return -2;
 
-		if (!item.getMoveable())
+		if (!item.Moveable())
 			return -3;
 
 		removeItem(item);
@@ -379,12 +487,12 @@ public class Field {
 
 //		if (item.getTyp() == "Brick")
 //			this.brickCountDown();
-//
-//		try {
-//			Thread.sleep(1);
-//		} catch (Exception e) {
+
+		try {
+			Thread.sleep(1);
+		} catch (Exception e) {
 //			e.printStackTrace();
-//		}
+		}
 
 		list.remove(item);
 
@@ -396,7 +504,7 @@ public class Field {
 
 		list = tempList;
 
-//			if (list.size() == 1)
-//			System.exit(0);
+		if (list.size() == 1)
+			System.exit(0);
 	}
 }

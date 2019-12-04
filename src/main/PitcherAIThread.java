@@ -2,14 +2,14 @@ package main;
 
 public class PitcherAIThread implements Runnable {
 
-	private Thread newThread;
+	private Thread pitcherThread;
 
 	private Field field;
 	private Bullet bulletUp, bulletDown;
 	private Pitcher pitcherUp;
 
 	PitcherAIThread(Bullet bulletUp, Bullet bulletDown, Pitcher pitcherUp, Field field) {
-		super();
+//		super();
 		this.field = field;
 		this.bulletUp = bulletUp;
 		this.bulletDown = bulletDown;
@@ -19,18 +19,18 @@ public class PitcherAIThread implements Runnable {
 	public void run() {
 		Thread thread = Thread.currentThread();
 
-		while (thread == newThread)
+		while (thread == pitcherThread)
 			move(this.bulletUp, this.bulletDown, this.pitcherUp, this.field);
 	}
 
 	public void stop() {
-		newThread = null;
+		pitcherThread = null;
 	}
 
 	public void start() {
-		if (newThread == null) {
-			newThread = new Thread(this);
-			newThread.start();
+		if (pitcherThread == null) {
+			pitcherThread = new Thread(this);
+			pitcherThread.start();
 		}
 	}
 
@@ -38,18 +38,20 @@ public class PitcherAIThread implements Runnable {
 
 		Bullet bullet = bulletUp.getY() < bulletDown.getY() ? bulletUp : bulletDown;
 
-		if (bullet.getY() < field.getDimY() / 2) {
-			int x = bullet.getX();
+		if (bullet.getY() < field.getDimY() / 3) {
+			int bX = bullet.getX() + bullet.getWidth() / 2;
+			int pX = pitcherUp.getX() + pitcherUp.getWidth() / 2;
 
-			if (pitcherUp.getX() < x)
+			if (pX < bX)
 				field.moveRIGHT(pitcherUp);
-			else if (pitcherUp.getX() > x)
+			else if (pX > bX)
 				field.moveLEFT(pitcherUp);
 
 			try {
 				Thread.sleep(1);
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("ppp");
+//				e.printStackTrace();
 			}
 		}
 		Starter.frame.repaint();

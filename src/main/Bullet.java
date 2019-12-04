@@ -1,4 +1,4 @@
-package textured;
+package main;
 
 class Bullet extends Moveable {
 
