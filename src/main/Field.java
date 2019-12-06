@@ -148,8 +148,10 @@ public class Field {
 
 		byte check = this.putItem(newX, newY, item);
 
-		if (check != 1)
+		if (check != 1) {
+			this.fillNull(posX, posY, item.getWidth(), item.getHeigth());
 			setItem(posX, posY, item);
+		}
 
 		if (check == -10)
 			Starter.finalAction((byte) 1, this);
@@ -158,6 +160,41 @@ public class Field {
 
 		return check;
 	}
+
+	// public byte checkArea(int x, int y, Item item) {
+//
+//		int width = x + item.getWidth();
+//		int heigth = y + item.getHeigth();
+//
+//		if (x < 0 || y < 0 || width >= this.getDimX() || heigth >= this.getDimY())
+//			return -2;
+//
+//		for (int i = x - 1; i < width; i++)
+//			for (int j = y - 1; j < heigth; j++) {
+//				Item pixel = this.getPixel(i, j);
+//				if (pixel != null & pixel != item)
+//					return 0;
+//			}
+//
+//		return 1;
+//
+//	}
+
+//	public void cleanAfter(int x, int y, Item item) {
+//
+//		int itemX = item.getX();
+//		int itemY = item.getY();
+//
+//		int width = item.getWidth();
+//		int heigth = item.getHeigth();
+//
+//		for (int i = x - 1; i < width; i++)
+//			for (int j = y - 1; j < heigth; j++) {
+//				Item pixel = this.getPixel(i, j);
+//				if (pixel != null & pixel != item) {
+//				}
+//			}
+//	}
 
 	public boolean nullArea(int x, int y, int width, int heigth) {
 
@@ -214,14 +251,11 @@ public class Field {
 		if (y < 0)
 			return -10;
 
-		if (heigth > this.getDimY() - Constants.MARGIN_Y / 2)
+		if (heigth > this.getDimY())
 			return -20;
 
-		if (x < 0)
+		if (x < 0 || width > this.getDimX())
 			return -30;
-
-		if (width > this.getDimX())
-			return -40;
 
 		for (int i = x; i < width; i++)
 			for (int j = y; j < heigth; j++) {

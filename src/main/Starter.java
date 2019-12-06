@@ -206,17 +206,16 @@ public class Starter {
 	}
 
 	static void moveCatcherRight(Field field, Item item) {
-		for (int i = Constants.PITCHER_MOVE_DISTANCE; i > 0; i /= 2)
-			field.moveRIGHT(i, item);
-//			if (field.moveRIGHT(i, item) == 1)
-//				break;
+		for (int i = 0; i < Constants.PITCHER_MOVE_DISTANCE; i++)
+			if (field.moveRIGHT(item) != 1)
+				break;
+
 	}
 
 	static void moveCatcherLeft(Field field, Item item) {
-		for (int i = Constants.PITCHER_MOVE_DISTANCE; i > 0; i /= 2)
-			field.moveLEFT(i, item);
-//			if (field.moveLEFT(i, item) == 1)
-//				break;
+		for (int i = 0; i < Constants.PITCHER_MOVE_DISTANCE; i++)
+			if (field.moveLEFT(item) != 1)
+				break;
 	}
 
 	static void finalAction(byte action, Field field) {
