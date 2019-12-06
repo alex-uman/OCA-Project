@@ -93,13 +93,16 @@ public class Starter {
 		}
 
 		private void catchKey(KeyEvent key) {
-			switch (key.getKeyCode()) {
-			case 37:
+
+			int pressKey = key.getKeyCode();
+
+			switch (pressKey) {
+			case KeyEvent.VK_LEFT:
 				moveCatcherLeft(field, item);
-				break;
-			case 39:
+				return;
+			case KeyEvent.VK_RIGHT:
 				moveCatcherRight(field, item);
-				break;
+				return;
 			}
 		}
 
@@ -109,21 +112,7 @@ public class Starter {
 
 		Field field = new Field(Constants.DIM_X, Constants.DIM_Y);
 
-		Pitcher pitcherDown = new Pitcher(false, field);
-		Bullet bulletDown = new Bullet(pitcherDown);
-		BulletThread bulletDownThread = new BulletThread(bulletDown, field);
-
-		Pitcher pitcherUp = new Pitcher(true, field);
-		Bullet bulletUp = new Bullet(pitcherUp);
-		PitcherAIThread pitcherAI = new PitcherAIThread(bulletUp, bulletDown, pitcherUp, field);
-		BulletThread bulletUpThread = new BulletThread(bulletUp, field);
-
-		setField(field, pitcherDown);
-		fillField(field);
-
-		pitcherAI.start();
-		bulletDownThread.start();
-		bulletUpThread.start();
+		fieldInit(field);
 
 //		for (;;) {
 //
@@ -144,6 +133,24 @@ public class Starter {
 //				closing();
 //			}
 //		}
+	}
+
+	static void fieldInit(Field field) {
+		Pitcher pitcherDown = new Pitcher(false, field);
+		Bullet bulletDown = new Bullet(pitcherDown);
+		BulletThread bulletDownThread = new BulletThread(bulletDown, field);
+
+		Pitcher pitcherUp = new Pitcher(true, field);
+		Bullet bulletUp = new Bullet(pitcherUp);
+		PitcherAIThread pitcherAI = new PitcherAIThread(bulletUp, bulletDown, pitcherUp, field);
+		BulletThread bulletUpThread = new BulletThread(bulletUp, field);
+
+		setField(field, pitcherDown);
+		fillField(field);
+
+		pitcherAI.start();
+		bulletDownThread.start();
+		bulletUpThread.start();
 	}
 
 	static void fillField(Field field) {
