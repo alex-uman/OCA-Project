@@ -407,6 +407,9 @@ public class Field {
 
 	private void removeItem(Item item) {
 
+		if (item.getTyp() == "Bullet")
+			System.out.println("a Bullet is about to be removed!");
+
 		ArrayList<Item> list = getItemList();
 
 		eraseItem(item);
@@ -420,6 +423,8 @@ public class Field {
 //			e.printStackTrace();
 //		}
 
+//		if (item.getTyp() != "Bullet") {
+
 		list.remove(item);
 
 		ArrayList<Item> tempList = new ArrayList<>();
@@ -429,6 +434,13 @@ public class Field {
 				tempList.add(i);
 
 		list = tempList;
+//		} else {
+//			Bullet bullet = (Bullet) item;
+//			BulletThread bulletThread = new BulletThread(bullet, this);
+//			bulletThread.start();
+//
+//			System.out.println((bullet.getPitcher().getIsUpper() ? "Up" : "Down"));
+//		}
 
 //			if (list.size() == 1)
 //			System.exit(0);

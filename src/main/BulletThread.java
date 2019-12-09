@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ArrayList;
+
 public class BulletThread implements Runnable {
 
 	private Thread bulletThread;
@@ -19,7 +21,7 @@ public class BulletThread implements Runnable {
 		Thread thread = Thread.currentThread();
 
 		while (thread == bulletThread)
-			move(this.bullet, this.field);
+			move(this, this.bullet, this.field);
 	}
 
 	public void stop() {
@@ -33,7 +35,16 @@ public class BulletThread implements Runnable {
 		}
 	}
 
-	static void move(Bullet bullet, Field field) {
+	static void move(BulletThread thread, Bullet bullet, Field field) {
+
+//		System.out.println((bullet.getPitcher().getIsUpper() ? "Up" : "Down"));
+
+		if (!field.getItemList().contains(bullet)) {
+			BulletThread newThread = new BulletThread(bullet, field);
+			newThread.start();
+
+			thread.stop();
+		}
 
 		if (field.hitRIGHT(bullet) != 1) {
 			bullet.setRight(false);
