@@ -16,12 +16,10 @@ public class BulletThread implements Runnable {
 	}
 
 	public void run() {
-		this.field.setItemList(this.bullet);
-
 		Thread thread = Thread.currentThread();
 
 		while (thread == bulletThread)
-			move(this, this.bullet, this.field);
+			move(this.bullet, this.field);
 	}
 
 	public void stop() {
@@ -35,16 +33,13 @@ public class BulletThread implements Runnable {
 		}
 	}
 
-	static void move(BulletThread thread, Bullet bullet, Field field) {
+	static void move(Bullet bullet, Field field) {
 
 //		System.out.println((bullet.getPitcher().getIsUpper() ? "Up" : "Down"));
 
-		if (!field.getItemList().contains(bullet)) {
-			BulletThread newThread = new BulletThread(bullet, field);
-			newThread.start();
+//		if (!field.getItemList().contains(bullet))
 
-			thread.stop();
-		}
+		field.setItemList(bullet);
 
 		if (field.hitRIGHT(bullet) != 1) {
 			bullet.setRight(false);
@@ -99,7 +94,7 @@ public class BulletThread implements Runnable {
 		try {
 			Thread.sleep(Constants.BULLET_DELAY);
 
-			Starter.frame.repaint();
+//			Starter.frame.repaint();
 
 		} catch (Exception e) {
 			System.out.println("bbb");

@@ -151,6 +151,10 @@ public class Starter {
 		pitcherAI.start();
 		bulletDownThread.start();
 		bulletUpThread.start();
+
+		RepaintThread repaintThread = new RepaintThread();
+		repaintThread.start();
+
 	}
 
 	static void fillField(Field field) {

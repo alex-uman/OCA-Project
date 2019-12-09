@@ -54,6 +54,7 @@ public class PitcherAIThread implements Runnable {
 //				e.printStackTrace();
 			}
 		}
-		Starter.frame.repaint();
+		
+//		Starter.frame.repaint();
 	}
 }

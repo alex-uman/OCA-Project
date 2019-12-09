@@ -67,6 +67,9 @@ public class Field {
 		if (item == null)
 			return false;
 
+		if (this.itemList.contains(item))
+			return true;
+
 		if (this.putItem(item.getX(), item.getY(), item) == 1) {
 			this.itemList.add(item);
 
