@@ -93,39 +93,39 @@ public class Field {
 
 	}
 
-	public byte moveUP(int value, Item item) {
+	public synchronized byte moveUP(int value, Item item) {
 		return this.moveItem(0, -value, item);
 	}
 
-	public byte moveDOWN(int value, Item item) {
+	public synchronized byte moveDOWN(int value, Item item) {
 		return this.moveItem(0, value, item);
 	}
 
-	public byte moveLEFT(int value, Item item) {
+	public synchronized byte moveLEFT(int value, Item item) {
 		return this.moveItem(-value, 0, item);
 	}
 
-	public byte moveRIGHT(int value, Item item) {
+	public synchronized byte moveRIGHT(int value, Item item) {
 		return this.moveItem(value, 0, item);
 	}
 
-	public byte moveUP(Item item) {
+	public synchronized byte moveUP(Item item) {
 		return this.moveItem(0, -1, item);
 	}
 
-	public byte moveDOWN(Item item) {
+	public synchronized byte moveDOWN(Item item) {
 		return this.moveItem(0, 1, item);
 	}
 
-	public byte moveLEFT(Item item) {
+	public synchronized byte moveLEFT(Item item) {
 		return this.moveItem(-1, 0, item);
 	}
 
-	public byte moveRIGHT(Item item) {
+	public synchronized byte moveRIGHT(Item item) {
 		return this.moveItem(1, 0, item);
 	}
 
-	public byte moveItem(int x, int y, Item item) {
+	public synchronized byte moveItem(int x, int y, Item item) {
 
 		if (item == null)
 			return -2;
@@ -199,7 +199,7 @@ public class Field {
 //			}
 //	}
 
-	public boolean nullArea(int x, int y, int width, int heigth) {
+	public synchronized boolean nullArea(int x, int y, int width, int heigth) {
 
 		if (x < 0 || y < 0 || x + width >= this.getDimX() || y + heigth >= this.getDimY())
 			return false;
@@ -210,7 +210,7 @@ public class Field {
 
 	}
 
-	private void setItem(int x, int y, Item item) {
+	private synchronized void setItem(int x, int y, Item item) {
 
 		if (item == null)
 			return;
@@ -226,14 +226,14 @@ public class Field {
 
 	}
 
-	private void eraseItem(Item item) {
+	private synchronized void eraseItem(Item item) {
 		if (item == null)
 			return;
 
 		fillNull(item.getX(), item.getY(), item.getWidth(), item.getHeigth());
 	}
 
-	private void fillNull(int x, int y, int width, int heigth) {
+	private synchronized void fillNull(int x, int y, int width, int heigth) {
 
 		width += x;
 		heigth += y;
@@ -270,7 +270,7 @@ public class Field {
 		return 1;
 	}
 
-	public byte hitLEFT(Item item) {
+	public synchronized byte hitLEFT(Item item) {
 
 		if (item == null)
 			return -2;
@@ -293,7 +293,7 @@ public class Field {
 
 	}
 
-	public byte hitRIGHT(Item item) {
+	public synchronized byte hitRIGHT(Item item) {
 
 		if (item == null)
 			return -2;
@@ -315,7 +315,7 @@ public class Field {
 		return 1;
 	}
 
-	public byte hitUP(Item item) {
+	public synchronized byte hitUP(Item item) {
 
 		if (item == null)
 			return -2;
@@ -337,7 +337,7 @@ public class Field {
 		return 1;
 	}
 
-	public byte hitDOWN(Item item) {
+	public synchronized byte hitDOWN(Item item) {
 
 		if (item == null)
 			return -2;
@@ -395,7 +395,7 @@ public class Field {
 		return 0;
 	}
 
-	public byte eliminateItem(Item item) {
+	public synchronized byte eliminateItem(Item item) {
 
 		if (item == null)
 			return -2;
@@ -408,7 +408,7 @@ public class Field {
 		return 1;
 	}
 
-	private void removeItem(Item item) {
+	private synchronized void removeItem(Item item) {
 
 		if (item.getTyp() == "Bullet")
 			System.out.println("a Bullet is about to be removed!");
